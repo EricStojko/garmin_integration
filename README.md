@@ -65,3 +65,15 @@ This script parses a local `workouts.json` file, translates exercise names to ve
 
 3. **Provide MFA Code (First Run Only):**
    On your first run, Garmin will send a Multi-Factor Authentication (MFA) code to your email. Enter it in the terminal prompt. Subsequent runs will skip this step by using the cached session token.
+
+---
+
+## Running Tests
+
+We use Python's built-in `unittest` library to verify payload mapping logic and format validations without hitting Garmin's live servers.
+
+Run tests using:
+```bash
+python -m unittest test_garmin_uploader.py
+```
+
