@@ -116,6 +116,7 @@ def _make_exercise_step(
     exercise_name: str,
     reps: int,
     note: str,
+    weight: float = None,
 ) -> dict:
     """
     Build a single ExecutableStepDTO for one set of an exercise.
@@ -157,7 +158,7 @@ def _make_exercise_step(
         "exerciseName": exercise_name,
         "workoutProvider": None,
         "providerExerciseSourceId": None,
-        "weightValue": None,
+        "weightValue": float(weight) if weight is not None else None,
         "weightUnit": _WEIGHT_UNIT,
     }
 
@@ -244,6 +245,7 @@ def build_garmin_workout(json_workout: dict) -> dict:
         reps:        int = int(exercise["reps"])
         sets:        int = int(exercise["sets"])
         note:        str = exercise.get("note", "")
+        weight           = exercise.get("weight")
 
         mapping = GARMIN_EXERCISE_MAP.get(custom_name)
         if mapping is None:
@@ -267,6 +269,7 @@ def build_garmin_workout(json_workout: dict) -> dict:
                 exercise_name=garmin_name,
                 reps=reps,
                 note=note,
+                weight=weight,
             ),
             _make_rest_step(
                 step_order=group_order + 2,
@@ -430,6 +433,21 @@ def main() -> None:
         logger.error("Aborting -- could not authenticate.")
         sys.exit(1)
 
+    # Fetch existing workouts for deduplication
+    existing_workouts = {}
+    try:
+        logger.info("Fetching existing workouts from Garmin Connect for deduplication...")
+        # Get up to 100 workouts
+        online_list = client.get_workouts(0, 100)
+        for w in online_list:
+            w_name = w.get("workoutName")
+            w_id = w.get("workoutId") or w.get("id")
+            if w_name and w_id:
+                existing_workouts[w_name] = w_id
+        logger.info("Found %d online workouts.", len(existing_workouts))
+    except Exception as exc:
+        logger.warning("Could not fetch existing workouts: %s. Proceeding without deduplication.", exc)
+
     try:
         workouts = load_workouts(WORKOUTS_FILE)
         logger.info("Loaded %d workout(s) from %s", len(workouts), WORKOUTS_FILE)
@@ -455,6 +473,16 @@ def main() -> None:
         if not validate_payload(payload, workout_name):
             failure_count += 1
             continue
+
+        # Deduplication check
+        if workout_name in existing_workouts:
+            old_id = existing_workouts[workout_name]
+            logger.info("Duplicate found: '%s' (ID: %s). Deleting old workout...", workout_name, old_id)
+            try:
+                client.delete_workout(old_id)
+                logger.info("Deleted old workout '%s'.", workout_name)
+            except Exception as exc:
+                logger.error("Failed to delete old workout '%s': %s", workout_name, exc)
 
         try:
             logger.info("Uploading '%s' ...", workout_name)

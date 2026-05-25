@@ -42,6 +42,7 @@
           "name": "Goblet Squat",
           "reps": 11,
           "sets": 4,
+          "weight": 16.0,
           "note": "KB 16kg ali tezji DB. 1s pauza na dnu."
         },
         {
@@ -54,6 +55,7 @@
           "name": "Kettlebell Swing",
           "reps": 20,
           "sets": 4,
+          "weight": 16.0,
           "note": "KB 16kg. Cista eksplozivnost iz bokov (45 sek AMRAP)."
         },
         {
@@ -95,6 +97,7 @@
           "name": "DB Curl",
           "reps": 12,
           "sets": 3,
+          "weight": 10.0,
           "note": "Superset z tricepsom. Leva roka narekuje volumen."
         }
       ]
@@ -118,6 +121,7 @@
           "name": "Stepper Step-ups",
           "reps": 20,
           "sets": 3,
+          "weight": 16.0,
           "note": "Gymbeam stepper + 2x 8kg KB."
         },
         {
