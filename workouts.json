@@ -1,0 +1,132 @@
+{
+  "workouts": [
+    {
+      "name": "Beach Body 2026 - Trening A (Potiski)",
+      "steps": [
+        {
+          "name": "Weighted/Assisted Dips",
+          "reps": 7,
+          "sets": 4,
+          "note": "Kletka + elastika. RPE 8.5. Fokus na komolce."
+        },
+        {
+          "name": "Enorocni DB Shoulder Press",
+          "reps": 10,
+          "sets": 3,
+          "note": "Klop 75deg. Zacni z LEVO roko!"
+        },
+        {
+          "name": "Incline Dumbbell Bench Press",
+          "reps": 10,
+          "sets": 3,
+          "note": "Klop 30deg. Kontroliran spust 3 sekunde."
+        },
+        {
+          "name": "Lateral Raises",
+          "reps": 13,
+          "sets": 4,
+          "note": "DB ali spodnji skripec. RPE 9."
+        },
+        {
+          "name": "Foam Roller Reverse Crunch",
+          "reps": 15,
+          "sets": 3,
+          "note": "Pocasen izteg, varuj spodnji hrbet."
+        }
+      ]
+    },
+    {
+      "name": "Beach Body 2026 - Trening B (Spodnji del)",
+      "steps": [
+        {
+          "name": "Goblet Squat",
+          "reps": 11,
+          "sets": 4,
+          "note": "KB 16kg ali tezji DB. 1s pauza na dnu."
+        },
+        {
+          "name": "Bulgarian Split Squat",
+          "reps": 9,
+          "sets": 3,
+          "note": "Klop + DBs. Stabilizacija bokov in piriformisa."
+        },
+        {
+          "name": "Kettlebell Swing",
+          "reps": 20,
+          "sets": 4,
+          "note": "KB 16kg. Cista eksplozivnost iz bokov (45 sek AMRAP)."
+        },
+        {
+          "name": "Corenght Glute Bridges",
+          "reps": 15,
+          "sets": 3,
+          "note": "Elastika okoli kolen. Stisk zadnjice."
+        }
+      ]
+    },
+    {
+      "name": "Beach Body 2026 - Trening C (Vlecenja)",
+      "steps": [
+        {
+          "name": "Assisted Pull-ups",
+          "reps": 7,
+          "sets": 4,
+          "note": "Kletka + elastika. Kontroliran spust."
+        },
+        {
+          "name": "Lat Pulldown",
+          "reps": 10,
+          "sets": 3,
+          "note": "Kingsgym Lat Machine. Do kljucnice."
+        },
+        {
+          "name": "Enorocno veslanje na skripcu",
+          "reps": 11,
+          "sets": 3,
+          "note": "Kingsgym Pulley. Brez rotacije trupa."
+        },
+        {
+          "name": "Face Pulls",
+          "reps": 15,
+          "sets": 4,
+          "note": "Skripec. Kljucno za zdravje leve rame!"
+        },
+        {
+          "name": "DB Curl",
+          "reps": 12,
+          "sets": 3,
+          "note": "Superset z tricepsom. Leva roka narekuje volumen."
+        }
+      ]
+    },
+    {
+      "name": "Beach Body 2026 - Trening D (Conditioning)",
+      "steps": [
+        {
+          "name": "Push Press z dolgo palico",
+          "reps": 6,
+          "sets": 4,
+          "note": "Kletka + Barbell. Moc iz nog, zakljuci z rameni."
+        },
+        {
+          "name": "Renegade Row",
+          "reps": 10,
+          "sets": 3,
+          "note": "V poziciji skleca na DB. Core stabilnost."
+        },
+        {
+          "name": "Stepper Step-ups",
+          "reps": 20,
+          "sets": 3,
+          "note": "Gymbeam stepper + 2x 8kg KB."
+        },
+        {
+          "name": "Hanging Knee Raises",
+          "reps": 12,
+          "sets": 3,
+          "note": "Visec na kletki. Kontroliran spust."
+        }
+      ]
+    }
+  ]
+}

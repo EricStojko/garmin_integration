@@ -1,0 +1,6 @@
+# Never commit credentials or session tokens
+.env
+*.token
+.garmin_tokens/
+__pycache__/
+*.pyc
