@@ -5,13 +5,13 @@
       "between_exercise_rest": 120,
       "steps": [
         {
-          "name": "Weighted/Assisted Dips",
+          "name": "Dips",
           "reps": 7,
           "sets": 4,
           "note": "Kletka + elastika. RPE 8.5. Fokus na komolce."
         },
         {
-          "name": "Enorocni DB Shoulder Press",
+          "name": "Dumbbell Shoulder Press",
           "reps": 10,
           "sets": 3,
           "note": "Klop 75deg. Zacni z LEVO roko!"
@@ -29,7 +29,7 @@
           "note": "DB ali spodnji skripec. RPE 9."
         },
         {
-          "name": "Foam Roller Reverse Crunch",
+          "name": "Reverse Crunch",
           "reps": 15,
           "sets": 3,
           "note": "Pocasen izteg, varuj spodnji hrbet."
@@ -61,7 +61,7 @@
           "note": "KB 16kg. Cista eksplozivnost iz bokov (45 sek AMRAP)."
         },
         {
-          "name": "Corenght Glute Bridges",
+          "name": "Glute Bridge",
           "reps": 15,
           "sets": 3,
           "note": "Elastika okoli kolen. Stisk zadnjice."
@@ -73,7 +73,7 @@
       "between_exercise_rest": 120,
       "steps": [
         {
-          "name": "Assisted Pull-ups",
+          "name": "Pull Ups",
           "reps": 7,
           "sets": 4,
           "note": "Kletka + elastika. Kontroliran spust."
@@ -85,7 +85,7 @@
           "note": "Kingsgym Lat Machine. Do kljucnice."
         },
         {
-          "name": "Enorocno veslanje na skripcu",
+          "name": "Cable Row",
           "reps": 11,
           "sets": 3,
           "note": "Kingsgym Pulley. Brez rotacije trupa."
@@ -97,7 +97,7 @@
           "note": "Skripec. Kljucno za zdravje leve rame!"
         },
         {
-          "name": "DB Curl",
+          "name": "Dumbbell Bicep Curl",
           "reps": 12,
           "sets": 3,
           "weight": 10.0,
@@ -110,7 +110,7 @@
       "between_exercise_rest": 60,
       "steps": [
         {
-          "name": "Push Press z dolgo palico",
+          "name": "Push Press",
           "reps": 6,
           "sets": 4,
           "note": "Kletka + Barbell. Moc iz nog, zakljuci z rameni."
@@ -122,7 +122,7 @@
           "note": "V poziciji skleca na DB. Core stabilnost."
         },
         {
-          "name": "Stepper Step-ups",
+          "name": "Step Up",
           "reps": 20,
           "sets": 3,
           "weight": 16.0,
