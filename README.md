@@ -9,8 +9,8 @@ This script parses a local `workouts.json` file, translates exercise names to ve
 - **Automatic Session Caching:** Caches login tokens to `.garmin_tokens/` after the first successful login. This avoids repeated 2FA/MFA email prompts and rate-limiting.
 - **Smart Workout Generator:** Automatically builds `RepeatGroupDTO` objects for each exercise.
 - **Auto-Rest Handling:** Automatically adds rest steps (default 90 seconds) between sets and skips the rest interval on the final set.
-- **Predefined Garmin Mapping:** Maps human-readable Slovenian and English exercise names (e.g., `Enorocni DB Shoulder Press`, `Goblet Squat`) to Garmin's specific internal category keys.
-- **Smart Fuzzy Matcher:** Automatically resolves new exercise names using fuzzy string matching against a curated local database (`garmin_exercises_db.json`). No code changes needed when adding new training programs.
+- **Predefined Garmin Mapping:** Maps human-readable English exercise names (e.g., `Dumbbell Shoulder Press`, `Goblet Squat`) to Garmin's specific internal category keys.
+- **Smart Fuzzy Matcher:** Automatically resolves Slovenian and alternative exercise name variations using fuzzy string matching against a curated local database (`garmin_exercises_db.json`). No code changes needed when adding new training programs.
 
 ---
 
@@ -45,7 +45,7 @@ Edit `garmin_exercises_db.json` and append a new entry:
 ```
 The `category` and `exerciseName` must be valid Garmin keys. Use `find_valid_categories.py` or `find_alt_categories.py` to verify them against the live API.
 
-**Option B — Add to the exact map (recommended for personal/Slovenian names):**
+**Option B — Add to the exact map (recommended for direct O(1) lookups):**
 
 Add to `GARMIN_EXERCISE_MAP` in `garmin_uploader.py`:
 ```python
