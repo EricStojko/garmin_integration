@@ -68,30 +68,31 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     # ---- Trening A (Potiski / Push) ----------------------------------------
-    "Weighted/Assisted Dips":       ("PUSH_UP",         "DIP"),                         # DIP is not a valid category; PUSH_UP is ✓
-    "Enorocni DB Shoulder Press":   ("SHOULDER_PRESS",  "DUMBBELL_SHOULDER_PRESS"),     # ✓
-    "Incline Dumbbell Bench Press": ("BENCH_PRESS",     "INCLINE_DUMBBELL_BENCH_PRESS"),# ✓
-    "Lateral Raises":               ("LATERAL_RAISE",   "LATERAL_RAISE"),               # ✓
-    "Foam Roller Reverse Crunch":   ("CRUNCH",          "REVERSE_CRUNCH"),              # ✓
+    "Dips":                         ("PUSH_UP",           "DIP"),
+    "Dumbbell Shoulder Press":      ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
+    "Incline Dumbbell Bench Press": ("BENCH_PRESS",       "INCLINE_DUMBBELL_BENCH_PRESS"),
+    "Lateral Raises":               ("LATERAL_RAISE",     "LATERAL_RAISE"),
+    "Reverse Crunch":               ("CRUNCH",            "REVERSE_CRUNCH"),
 
     # ---- Trening B (Spodnji del / Lower Body) --------------------------------
-    "Goblet Squat":                 ("SQUAT",           "GOBLET_SQUAT"),                # ✓
-    "Bulgarian Split Squat":        ("LUNGE",           "BULGARIAN_SPLIT_SQUAT"),       # ✓
-    "Kettlebell Swing":             ("HIP_SWING",       "KETTLEBELL_SWING"),            # ✓
-    "Corenght Glute Bridges":       ("HIP_RAISE",       "GLUTE_BRIDGE"),                # ✓
+    "Goblet Squat":                 ("SQUAT",             "GOBLET_SQUAT"),
+    "Bulgarian Split Squat":        ("LUNGE",             "BULGARIAN_SPLIT_SQUAT"),
+    "Kettlebell Swing":             ("HIP_SWING",         "KETTLEBELL_SWING"),
+    "Glute Bridge":                 ("HIP_RAISE",         "GLUTE_BRIDGE"),
 
     # ---- Trening C (Vlecenja / Pull) -----------------------------------------
-    "Assisted Pull-ups":            ("PULL_UP",         "PULL_UP"),                     # ✓
-    "Lat Pulldown":                 ("PULL_UP",         "LAT_PULLDOWN"),                # LAT_PULL_DOWN invalid; PULL_UP is ✓
-    "Enorocno veslanje na skripcu": ("ROW",             "CABLE_ROW"),                   # ✓
-    "Face Pulls":                   ("ROW",             "FACE_PULL"),                   # FLY invalid; ROW is ✓
-    "DB Curl":                      ("CURL",            "DUMBBELL_BICEP_CURL"),         # ✓
+    "Pull Ups":                     ("PULL_UP",           "PULL_UP"),
+    "Lat Pulldown":                 ("PULL_UP",           "LAT_PULLDOWN"),
+    "Cable Row":                    ("ROW",               "CABLE_ROW"),
+    "Face Pulls":                   ("ROW",               "FACE_PULL"),
+    "Dumbbell Bicep Curl":          ("CURL",              "DUMBBELL_BICEP_CURL"),
+    "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
 
     # ---- Trening D (Conditioning) --------------------------------------------
-    "Push Press z dolgo palico":    ("SHOULDER_PRESS",  "PUSH_PRESS"),                  # PUSH_PRESS invalid; SHOULDER_PRESS is ✓
-    "Renegade Row":                 ("ROW",             "RENEGADE_ROW"),                # ✓
-    "Stepper Step-ups":             ("LUNGE",           "STEP_UP"),                     # STEP_UP invalid; LUNGE is ✓
-    "Hanging Knee Raises":          ("LEG_RAISE",       "HANGING_KNEE_RAISE"),          # ✓
+    "Push Press":                   ("SHOULDER_PRESS",    "PUSH_PRESS"),
+    "Renegade Row":                 ("ROW",               "RENEGADE_ROW"),
+    "Step Up":                      ("LUNGE",             "STEP_UP"),
+    "Hanging Knee Raises":          ("LEG_RAISE",         "HANGING_KNEE_RAISE"),
 }
 
 # Default token store path (saves session after first login → no 2FA next time)
