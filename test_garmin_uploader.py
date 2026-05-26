@@ -35,36 +35,42 @@ class TestGarminUploader(unittest.TestCase):
         }
 
     def test_build_garmin_workout_success(self):
-        """Test payload creation with fully mapped valid exercises and weights."""
+        """Test payload creation with fully mapped valid exercises, weights, and rest steps."""
         payload = build_garmin_workout(self.sample_workout)
-        
+
         # Verify basic payload details
         self.assertEqual(payload["workoutName"], "Test Workout A")
         self.assertEqual(payload["sportType"]["sportTypeKey"], "strength_training")
-        
+
         steps = payload["workoutSegments"][0]["workoutSteps"]
-        self.assertEqual(len(steps), 2)  # Two repeat groups
-        
-        # Test first exercise (Goblet Squat) RepeatGroup properties
+        # 2 exercises + 1 between-exercise rest = 3 top-level steps
+        self.assertEqual(len(steps), 3)
+
+        # First step: Goblet Squat RepeatGroup
         squat_group = steps[0]
         self.assertEqual(squat_group["type"], "RepeatGroupDTO")
         self.assertEqual(squat_group["numberOfIterations"], 3)
         self.assertTrue(squat_group["skipLastRestStep"])
-        
-        # Test inner steps (exercise step & rest step)
+
+        # Inner steps: exercise step + intra-set rest step
         inner_steps = squat_group["workoutSteps"]
         self.assertEqual(len(inner_steps), 2)
-        
+
         exercise_step = inner_steps[0]
         self.assertEqual(exercise_step["category"], "SQUAT")
         self.assertEqual(exercise_step["exerciseName"], "GOBLET_SQUAT")
         self.assertEqual(exercise_step["endConditionValue"], 8.0)
         self.assertEqual(exercise_step["description"], "Keep back straight")
-        # Assert weight value is passed correctly
         self.assertEqual(exercise_step["weightValue"], 12.5)
-        
-        # Test second exercise (Incline DB Bench Press) has no weight
-        bench_step = steps[1]["workoutSteps"][0]
+
+        # Second step: between-exercise rest (standalone ExecutableStepDTO)
+        between_rest = steps[1]
+        self.assertEqual(between_rest["type"], "ExecutableStepDTO")
+        self.assertEqual(between_rest["stepType"]["stepTypeKey"], "rest")
+        self.assertIsNone(between_rest["childStepId"])
+
+        # Third step: Incline DB Bench Press RepeatGroup
+        bench_step = steps[2]["workoutSteps"][0]
         self.assertIsNone(bench_step["weightValue"])
 
     def test_build_garmin_workout_missing_required_fields(self):
@@ -106,6 +112,62 @@ class TestGarminUploader(unittest.TestCase):
 
         self.assertEqual(exercise_step["category"], "UNKNOWN")
         self.assertEqual(exercise_step["exerciseName"], "UNKNOWN_EXERCISE")
+
+    def test_between_exercise_rest_steps(self):
+        """Verify between-exercise rest steps are inserted correctly."""
+        workout = {
+            "name": "Rest Test Workout",
+            "between_exercise_rest": 90,
+            "steps": [
+                {"name": "Goblet Squat",               "sets": 3, "reps": 8},
+                {"name": "Incline Dumbbell Bench Press", "sets": 3, "reps": 8},
+                {"name": "Lateral Raises",              "sets": 3, "reps": 12},
+            ]
+        }
+        payload = build_garmin_workout(workout)
+        steps = payload["workoutSegments"][0]["workoutSteps"]
+
+        # 3 exercises + 2 between-exercise rests = 5 top-level steps
+        self.assertEqual(len(steps), 5)
+
+        # Steps at indices 1 and 3 must be between-exercise rest steps
+        for rest_idx in (1, 3):
+            rest_step = steps[rest_idx]
+            self.assertEqual(rest_step["type"], "ExecutableStepDTO")
+            self.assertEqual(rest_step["stepType"]["stepTypeKey"], "rest")
+            self.assertEqual(rest_step["endConditionValue"], 90.0)   # custom duration
+            self.assertIsNone(rest_step["childStepId"])              # top-level, no parent
+
+        # Last step (index 4) must be a RepeatGroup, not a rest
+        self.assertEqual(steps[4]["type"], "RepeatGroupDTO")
+
+    def test_between_exercise_rest_default(self):
+        """Verify the default between-exercise rest (120s) is used when field is absent."""
+        from garmin_uploader import DEFAULT_BETWEEN_EXERCISE_REST
+        workout = {
+            "name": "Default Rest Workout",
+            # no between_exercise_rest key
+            "steps": [
+                {"name": "Goblet Squat",               "sets": 3, "reps": 8},
+                {"name": "Incline Dumbbell Bench Press", "sets": 3, "reps": 8},
+            ]
+        }
+        payload = build_garmin_workout(workout)
+        steps = payload["workoutSegments"][0]["workoutSteps"]
+        # between-exercise rest is at index 1
+        self.assertEqual(steps[1]["endConditionValue"], DEFAULT_BETWEEN_EXERCISE_REST)
+
+    def test_no_trailing_rest_after_last_exercise(self):
+        """Verify no between-exercise rest is appended after the final exercise."""
+        workout = {
+            "name": "Single Exercise",
+            "steps": [{"name": "Goblet Squat", "sets": 3, "reps": 8}]
+        }
+        payload = build_garmin_workout(workout)
+        steps = payload["workoutSegments"][0]["workoutSteps"]
+        # Only 1 RepeatGroup, no trailing rest
+        self.assertEqual(len(steps), 1)
+        self.assertEqual(steps[0]["type"], "RepeatGroupDTO")
 
     def test_validate_payload(self):
         """Test validate_payload identifies correctly structured payloads."""

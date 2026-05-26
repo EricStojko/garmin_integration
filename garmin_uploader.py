@@ -103,6 +103,10 @@ WORKOUTS_FILE = Path(__file__).parent / "workouts.json"
 # Path to the fuzzy-match exercise database
 EXERCISES_DB_FILE = Path(__file__).parent / "garmin_exercises_db.json"
 
+# Default rest duration BETWEEN exercises (seconds).
+# Can be overridden per-workout by adding "between_exercise_rest": <seconds> to workouts.json.
+DEFAULT_BETWEEN_EXERCISE_REST: float = 120.0  # 2 minutes
+
 # ---------------------------------------------------------------------------
 # Fuzzy exercise matching
 # ---------------------------------------------------------------------------
@@ -254,10 +258,16 @@ def _make_exercise_step(
     }
 
 
-def _make_rest_step(step_order: int, child_step_id: int, rest_seconds: float = 90.0) -> dict:
+def _make_rest_step(
+    step_order: int,
+    child_step_id: int | None,
+    rest_seconds: float = 90.0,
+) -> dict:
     """
-    Build a rest step between sets (conditionTypeId=2 = time).
-    Default: 90 seconds rest — adjust rest_seconds as needed.
+    Build a time-based rest step (conditionTypeId=2).
+
+    Used both inside RepeatGroups (between sets, child_step_id = group id)
+    and as a top-level step between exercises (child_step_id = None).
     """
     return {
         "type": "ExecutableStepDTO",
@@ -303,9 +313,12 @@ def build_garmin_workout(json_workout: dict) -> dict:
     Structure mirrors real Garmin workouts:
       - Each exercise becomes a RepeatGroupDTO (one repeat = N sets).
       - Inside each RepeatGroup: one exercise step + one rest step per iteration.
+      - Between each RepeatGroup: a standalone rest step (between_exercise_rest seconds).
+        The between-exercise rest is skipped after the last exercise.
 
     Args:
-        json_workout: A single workout dict with 'name' and 'steps'.
+        json_workout: A single workout dict with 'name', 'steps', and optionally
+            'between_exercise_rest' (float, seconds, default 120).
 
     Returns:
         A dict ready to POST via client.upload_workout().
@@ -318,13 +331,18 @@ def build_garmin_workout(json_workout: dict) -> dict:
     if not json_workout.get("steps"):
         raise ValueError(f"Workout '{json_workout['name']}' has no 'steps' defined.")
 
-    workout_name   = json_workout["name"]
-    workout_steps  = []        # top-level step list (RepeatGroupDTOs)
-    group_order    = 1         # stepOrder for each RepeatGroup
-    child_step_id  = 1         # groups 1,2,3… each with its own childStepId
+    workout_name          = json_workout["name"]
+    between_exercise_rest = float(
+        json_workout.get("between_exercise_rest", DEFAULT_BETWEEN_EXERCISE_REST)
+    )
+    workout_steps  = []        # top-level step list (RepeatGroupDTOs + between-exercise rests)
+    group_order    = 1         # stepOrder counter — incremented for every appended step
+    child_step_id  = 1         # each RepeatGroup gets its own childStepId (1, 2, 3 …)
     unmapped       = []
+    exercises      = json_workout["steps"]
+    n_exercises    = len(exercises)
 
-    for exercise in json_workout["steps"]:
+    for idx, exercise in enumerate(exercises):
         # Validate required fields
         for key in ("name", "reps", "sets"):
             if key not in exercise:
@@ -358,8 +376,9 @@ def build_garmin_workout(json_workout: dict) -> dict:
                 )
 
         # Build the inner steps for this RepeatGroup:
-        # [exercise_step, rest_step] — repeated N times (sets)
-        # stepOrder inside a group restarts at group_order+1
+        # [exercise_step, rest_step] — repeated N times (sets).
+        # skipLastRestStep=True drops the trailing rest after the final set;
+        # the between-exercise rest below takes its place.
         inner_steps = [
             _make_exercise_step(
                 step_order=group_order + 1,
@@ -383,7 +402,7 @@ def build_garmin_workout(json_workout: dict) -> dict:
             "childStepId": child_step_id,
             "numberOfIterations": sets,
             "smartRepeat": False,
-            "skipLastRestStep": True,   # skip rest after the final set
+            "skipLastRestStep": True,   # skip intra-set rest after the final set
             "endCondition": {
                 "conditionTypeId": 7,
                 "conditionTypeKey": "iterations",
@@ -398,6 +417,22 @@ def build_garmin_workout(json_workout: dict) -> dict:
         workout_steps.append(repeat_group)
         group_order   += 1
         child_step_id += 1
+
+        # Insert a standalone rest between exercises (not after the last one).
+        is_last = (idx == n_exercises - 1)
+        if not is_last and between_exercise_rest > 0:
+            workout_steps.append(
+                _make_rest_step(
+                    step_order=group_order,
+                    child_step_id=None,          # top-level step — no parent group
+                    rest_seconds=between_exercise_rest,
+                )
+            )
+            group_order += 1
+            logger.debug(
+                "Added %.0fs between-exercise rest after '%s'.",
+                between_exercise_rest, custom_name,
+            )
 
     if unmapped:
         logger.warning(

@@ -2,6 +2,7 @@
   "workouts": [
     {
       "name": "Beach Body 2026 - Trening A (Potiski)",
+      "between_exercise_rest": 120,
       "steps": [
         {
           "name": "Weighted/Assisted Dips",
@@ -37,6 +38,7 @@
     },
     {
       "name": "Beach Body 2026 - Trening B (Spodnji del)",
+      "between_exercise_rest": 120,
       "steps": [
         {
           "name": "Goblet Squat",
@@ -68,6 +70,7 @@
     },
     {
       "name": "Beach Body 2026 - Trening C (Vlecenja)",
+      "between_exercise_rest": 120,
       "steps": [
         {
           "name": "Assisted Pull-ups",
@@ -104,6 +107,7 @@
     },
     {
       "name": "Beach Body 2026 - Trening D (Conditioning)",
+      "between_exercise_rest": 60,
       "steps": [
         {
           "name": "Push Press z dolgo palico",
