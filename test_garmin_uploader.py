@@ -5,6 +5,7 @@ from pathlib import Path
 # Import functions from garmin_uploader
 from garmin_uploader import (
     build_garmin_workout,
+    fuzzy_match_exercise,
     validate_payload,
     load_workouts,
     main,
@@ -87,22 +88,22 @@ class TestGarminUploader(unittest.TestCase):
             build_garmin_workout(invalid_workout_3)
 
     def test_build_garmin_workout_unmapped_exercise(self):
-        """Verify unmapped exercise names default safely to UNKNOWN."""
+        """Verify gibberish exercise names fall through all lookups and default to UNKNOWN."""
         unmapped_workout = {
             "name": "Unmapped Exercise Workout",
             "steps": [
                 {
-                    "name": "Super Ultra Mega Lift",
+                    "name": "Super Ultra Mega Lift XYZZY",
                     "sets": 3,
                     "reps": 5,
                     "note": ""
                 }
             ]
         }
-        
+
         payload = build_garmin_workout(unmapped_workout)
         exercise_step = payload["workoutSegments"][0]["workoutSteps"][0]["workoutSteps"][0]
-        
+
         self.assertEqual(exercise_step["category"], "UNKNOWN")
         self.assertEqual(exercise_step["exerciseName"], "UNKNOWN_EXERCISE")
 
@@ -123,6 +124,32 @@ class TestGarminUploader(unittest.TestCase):
         self.assertTrue(validate_payload(valid_payload, "Test"))
         self.assertFalse(validate_payload(invalid_payload_no_name, "Test"))
         self.assertFalse(validate_payload(invalid_payload_no_steps, "Test"))
+
+    def test_fuzzy_match_known_alias(self):
+        """Fuzzy match resolves a well-known alias to the correct Garmin keys."""
+        # 'Barbell Squat' is not in GARMIN_EXERCISE_MAP but IS in garmin_exercises_db.json
+        result = fuzzy_match_exercise("Barbell Squat")
+        self.assertIsNotNone(result, "Expected a fuzzy match for 'Barbell Squat'")
+        category, exercise_name = result
+        self.assertEqual(category, "SQUAT")
+        self.assertEqual(exercise_name, "BARBELL_BACK_SQUAT")
+
+    def test_fuzzy_match_partial_name(self):
+        """Fuzzy match handles minor spelling variations and partial names."""
+        # 'Goblet KB' is a listed alias in garmin_exercises_db.json
+        result = fuzzy_match_exercise("Goblet KB")
+        self.assertIsNotNone(result, "Expected a fuzzy match for 'Goblet KB'")
+        category, exercise_name = result
+        self.assertEqual(category, "SQUAT")
+        self.assertEqual(exercise_name, "GOBLET_SQUAT")
+
+    def test_fuzzy_match_below_threshold_returns_none(self):
+        """Gibberish exercise names return None from fuzzy matcher (below cutoff)."""
+        result = fuzzy_match_exercise("Super Ultra Mega Lift XYZZY")
+        self.assertIsNone(
+            result,
+            "Expected no fuzzy match for completely nonsensical exercise name"
+        )
 
     @patch("garmin_uploader.init_garmin_client")
     @patch("garmin_uploader.load_workouts")

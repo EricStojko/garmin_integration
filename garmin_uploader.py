@@ -19,6 +19,7 @@ Requires: garminconnect>=0.3.2   pip install garminconnect
           python-dotenv>=1.0.0   pip install python-dotenv
 """
 
+import difflib
 import json
 import logging
 import os
@@ -98,6 +99,96 @@ DEFAULT_TOKENSTORE = str(Path(__file__).parent / ".garmin_tokens")
 
 # Path to the workout data file
 WORKOUTS_FILE = Path(__file__).parent / "workouts.json"
+
+# Path to the fuzzy-match exercise database
+EXERCISES_DB_FILE = Path(__file__).parent / "garmin_exercises_db.json"
+
+# ---------------------------------------------------------------------------
+# Fuzzy exercise matching
+# ---------------------------------------------------------------------------
+
+# Module-level cache so we only load the DB once per process run.
+_exercise_db: list[dict] | None = None
+
+
+def _load_exercise_db() -> list[dict]:
+    """
+    Load garmin_exercises_db.json once and cache it.
+
+    Returns a list of exercise entry dicts, each with:
+        'names'        — list of alias strings
+        'category'     — Garmin category key (e.g. 'SQUAT')
+        'exerciseName' — Garmin exercise key (e.g. 'GOBLET_SQUAT')
+    """
+    global _exercise_db
+    if _exercise_db is not None:
+        return _exercise_db
+
+    if not EXERCISES_DB_FILE.exists():
+        logger.warning(
+            "garmin_exercises_db.json not found at %s — fuzzy matching disabled.",
+            EXERCISES_DB_FILE,
+        )
+        _exercise_db = []
+        return _exercise_db
+
+    with EXERCISES_DB_FILE.open("r", encoding="utf-8") as fh:
+        data = json.load(fh)
+
+    _exercise_db = data.get("exercises", [])
+    logger.debug("Loaded %d entries from garmin_exercises_db.json.", len(_exercise_db))
+    return _exercise_db
+
+
+def fuzzy_match_exercise(
+    name: str,
+    cutoff: float = 0.6,
+) -> tuple[str, str] | None:
+    """
+    Fuzzy-match *name* against all aliases in garmin_exercises_db.json.
+
+    Uses Python's built-in :func:`difflib.get_close_matches` (no extra
+    dependencies) to find the best-matching alias and returns the
+    corresponding ``(category, exerciseName)`` tuple.
+
+    Args:
+        name:    The exercise name as written in workouts.json.
+        cutoff:  Minimum similarity score [0, 1]. Default 0.6.
+
+    Returns:
+        ``(category, exerciseName)`` if a confident match is found,
+        or ``None`` if nothing clears the cutoff threshold.
+    """
+    db = _load_exercise_db()
+    if not db:
+        return None
+
+    # Build a flat lookup: alias_lower → (category, exerciseName, canonical_alias)
+    alias_map: dict[str, tuple[str, str, str]] = {}
+    for entry in db:
+        cat = entry.get("category", "")
+        ex  = entry.get("exerciseName", "")
+        for alias in entry.get("names", []):
+            alias_map[alias.lower()] = (cat, ex, alias)
+
+    all_aliases = list(alias_map.keys())
+    matches = difflib.get_close_matches(
+        name.lower(), all_aliases, n=1, cutoff=cutoff
+    )
+
+    if not matches:
+        return None
+
+    best_alias = matches[0]
+    cat, ex, canonical = alias_map[best_alias]
+
+    # Compute the actual similarity score for the log message.
+    score = difflib.SequenceMatcher(None, name.lower(), best_alias).ratio()
+    logger.info(
+        "[FUZZY MATCH] '%s' → %s / %s  (matched alias: '%s', score: %.2f)",
+        name, cat, ex, canonical, score,
+    )
+    return cat, ex
 
 
 # ---------------------------------------------------------------------------
@@ -248,15 +339,23 @@ def build_garmin_workout(json_workout: dict) -> dict:
         weight           = exercise.get("weight")
 
         mapping = GARMIN_EXERCISE_MAP.get(custom_name)
-        if mapping is None:
-            category, garmin_name = "UNKNOWN", "UNKNOWN_EXERCISE"
-            unmapped.append(custom_name)
-            logger.warning(
-                "Exercise '%s' is not in GARMIN_EXERCISE_MAP — uploading as UNKNOWN.",
-                custom_name,
-            )
-        else:
+        if mapping is not None:
+            # 1. Exact match in GARMIN_EXERCISE_MAP (fastest path).
             category, garmin_name = mapping
+        else:
+            # 2. Fuzzy fallback — search garmin_exercises_db.json.
+            fuzzy = fuzzy_match_exercise(custom_name)
+            if fuzzy is not None:
+                category, garmin_name = fuzzy
+            else:
+                # 3. Nothing matched — upload as UNKNOWN.
+                category, garmin_name = "UNKNOWN", "UNKNOWN_EXERCISE"
+                unmapped.append(custom_name)
+                logger.warning(
+                    "Exercise '%s' has no exact or fuzzy match — uploading as UNKNOWN."
+                    " Add it to garmin_exercises_db.json or GARMIN_EXERCISE_MAP.",
+                    custom_name,
+                )
 
         # Build the inner steps for this RepeatGroup:
         # [exercise_step, rest_step] — repeated N times (sets)

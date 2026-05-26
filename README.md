@@ -10,6 +10,48 @@ This script parses a local `workouts.json` file, translates exercise names to ve
 - **Smart Workout Generator:** Automatically builds `RepeatGroupDTO` objects for each exercise.
 - **Auto-Rest Handling:** Automatically adds rest steps (default 90 seconds) between sets and skips the rest interval on the final set.
 - **Predefined Garmin Mapping:** Maps human-readable Slovenian and English exercise names (e.g., `Enorocni DB Shoulder Press`, `Goblet Squat`) to Garmin's specific internal category keys.
+- **Smart Fuzzy Matcher:** Automatically resolves new exercise names using fuzzy string matching against a curated local database (`garmin_exercises_db.json`). No code changes needed when adding new training programs.
+
+---
+
+## Exercise Name Matching
+
+When the uploader processes an exercise step, it resolves the name using a **3-step lookup chain**:
+
+```
+1. Exact match in GARMIN_EXERCISE_MAP  (garmin_uploader.py)  → fastest
+        ↓ not found
+2. Fuzzy match in garmin_exercises_db.json  (built-in difflib, no dependencies)
+        ↓ confidence < 0.6
+3. Fall back to UNKNOWN  → logged as a WARNING
+```
+
+A successful fuzzy match is always logged so you can see what was auto-resolved:
+```
+[FUZZY MATCH] 'Barbell Squat' → SQUAT / BARBELL_BACK_SQUAT  (matched alias: 'Barbell Squat', score: 1.00)
+```
+
+### Adding a New Exercise
+
+**Option A — Add to the database (recommended for common exercises):**
+
+Edit `garmin_exercises_db.json` and append a new entry:
+```json
+{
+  "names": ["My New Exercise", "Alternative Name", "Short Name"],
+  "category": "SQUAT",
+  "exerciseName": "BARBELL_BACK_SQUAT"
+}
+```
+The `category` and `exerciseName` must be valid Garmin keys. Use `find_valid_categories.py` or `find_alt_categories.py` to verify them against the live API.
+
+**Option B — Add to the exact map (recommended for personal/Slovenian names):**
+
+Add to `GARMIN_EXERCISE_MAP` in `garmin_uploader.py`:
+```python
+"My Custom Name": ("SQUAT", "BARBELL_BACK_SQUAT"),
+```
+Exact matches always take priority over fuzzy matches.
 
 ---
 

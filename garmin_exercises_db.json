@@ -1,0 +1,109 @@
+{
+  "_comment": "Curated Garmin exercise database for fuzzy matching. Each entry has multiple name aliases to improve match accuracy. All category/exerciseName values are verified against the Garmin Connect API. Add new entries here — never edit garmin_uploader.py for new exercises.",
+  "exercises": [
+    {"names": ["Barbell Back Squat", "Back Squat", "Squat BB", "Barbell Squat", "BB Squat"], "category": "SQUAT", "exerciseName": "BARBELL_BACK_SQUAT"},
+    {"names": ["Barbell Front Squat", "Front Squat", "Front Squat BB"], "category": "SQUAT", "exerciseName": "BARBELL_FRONT_SQUAT"},
+    {"names": ["Goblet Squat", "Goblet KB", "KB Goblet Squat", "Kettlebell Goblet Squat", "Dumbbell Goblet Squat", "DB Goblet Squat"], "category": "SQUAT", "exerciseName": "GOBLET_SQUAT"},
+    {"names": ["Box Squat", "Box Squat BB", "Barbell Box Squat"], "category": "SQUAT", "exerciseName": "BOX_SQUAT"},
+    {"names": ["Pause Squat", "Barbell Pause Squat", "Squat with Pause"], "category": "SQUAT", "exerciseName": "PAUSE_SQUAT"},
+    {"names": ["Hack Squat", "Barbell Hack Squat", "Machine Hack Squat"], "category": "SQUAT", "exerciseName": "HACK_SQUAT"},
+    {"names": ["Sumo Squat", "Sumo Barbell Squat", "Wide Stance Squat"], "category": "SQUAT", "exerciseName": "SUMO_SQUAT"},
+    {"names": ["Air Squat", "Bodyweight Squat", "BW Squat", "Squat no weight"], "category": "SQUAT", "exerciseName": "SQUAT"},
+    {"names": ["Dumbbell Squat", "DB Squat"], "category": "SQUAT", "exerciseName": "DUMBBELL_SQUAT"},
+    {"names": ["Overhead Squat", "OHS", "Barbell Overhead Squat"], "category": "SQUAT", "exerciseName": "OVERHEAD_SQUAT"},
+    {"names": ["Leg Press", "Machine Leg Press", "45 Degree Leg Press"], "category": "SQUAT", "exerciseName": "LEG_PRESS"},
+
+    {"names": ["Bulgarian Split Squat", "Split Squat", "Rear Foot Elevated Split Squat", "RFESS", "DB Bulgarian Split Squat"], "category": "LUNGE", "exerciseName": "BULGARIAN_SPLIT_SQUAT"},
+    {"names": ["Walking Lunge", "Dumbbell Walking Lunge", "DB Walking Lunge", "Barbell Walking Lunge"], "category": "LUNGE", "exerciseName": "WALKING_LUNGE"},
+    {"names": ["Reverse Lunge", "Step Back Lunge", "Dumbbell Reverse Lunge", "DB Reverse Lunge"], "category": "LUNGE", "exerciseName": "REVERSE_LUNGE"},
+    {"names": ["Forward Lunge", "Front Lunge", "Dumbbell Lunge", "DB Lunge", "Stationary Lunge", "Lunge"], "category": "LUNGE", "exerciseName": "LUNGE"},
+    {"names": ["Step Up", "Step-Up", "Stepper Step-ups", "Step Ups", "Dumbbell Step Up", "DB Step Up", "Kettlebell Step Up", "Box Step Up"], "category": "LUNGE", "exerciseName": "STEP_UP"},
+    {"names": ["Lateral Lunge", "Side Lunge", "Dumbbell Lateral Lunge"], "category": "LUNGE", "exerciseName": "LATERAL_LUNGE"},
+
+    {"names": ["Deadlift", "Barbell Deadlift", "Conventional Deadlift", "BB Deadlift"], "category": "DEADLIFT", "exerciseName": "BARBELL_DEADLIFT"},
+    {"names": ["Romanian Deadlift", "RDL", "Dumbbell Romanian Deadlift", "DB RDL", "DB Romanian Deadlift", "Barbell Romanian Deadlift"], "category": "DEADLIFT", "exerciseName": "ROMANIAN_DEADLIFT"},
+    {"names": ["Sumo Deadlift", "Sumo BB Deadlift", "Wide Stance Deadlift"], "category": "DEADLIFT", "exerciseName": "SUMO_DEADLIFT"},
+    {"names": ["Trap Bar Deadlift", "Hex Bar Deadlift", "Hex Deadlift"], "category": "DEADLIFT", "exerciseName": "TRAP_BAR_DEADLIFT"},
+    {"names": ["Stiff Leg Deadlift", "Stiff-Legged Deadlift", "SLDL"], "category": "DEADLIFT", "exerciseName": "STIFF_LEG_DEADLIFT"},
+    {"names": ["Single Leg Deadlift", "Single-Leg RDL", "Dumbbell Single Leg Deadlift", "DB Single Leg Deadlift"], "category": "DEADLIFT", "exerciseName": "SINGLE_LEG_DEADLIFT"},
+
+    {"names": ["Barbell Bench Press", "Flat Bench Press", "BB Bench Press", "Bench Press"], "category": "BENCH_PRESS", "exerciseName": "BARBELL_BENCH_PRESS"},
+    {"names": ["Incline Dumbbell Bench Press", "Incline DB Bench Press", "Incline Dumbbell Press", "Incline DB Press"], "category": "BENCH_PRESS", "exerciseName": "INCLINE_DUMBBELL_BENCH_PRESS"},
+    {"names": ["Incline Barbell Bench Press", "Incline BB Bench Press", "Incline Barbell Press"], "category": "BENCH_PRESS", "exerciseName": "INCLINE_BARBELL_BENCH_PRESS"},
+    {"names": ["Decline Bench Press", "Decline Barbell Bench Press", "Decline BB Bench Press"], "category": "BENCH_PRESS", "exerciseName": "DECLINE_BARBELL_BENCH_PRESS"},
+    {"names": ["Dumbbell Bench Press", "DB Bench Press", "Flat Dumbbell Bench Press", "Flat DB Bench Press"], "category": "BENCH_PRESS", "exerciseName": "DUMBBELL_BENCH_PRESS"},
+    {"names": ["Close Grip Bench Press", "Close-Grip Bench Press", "Narrow Grip Bench Press"], "category": "BENCH_PRESS", "exerciseName": "CLOSE_GRIP_BARBELL_BENCH_PRESS"},
+
+    {"names": ["Dumbbell Shoulder Press", "DB Shoulder Press", "Seated DB Shoulder Press", "Enorocni DB Shoulder Press", "One Arm Dumbbell Shoulder Press", "Single Arm DB Press"], "category": "SHOULDER_PRESS", "exerciseName": "DUMBBELL_SHOULDER_PRESS"},
+    {"names": ["Barbell Overhead Press", "Overhead Press", "OHP", "Military Press", "Standing Overhead Press", "Barbell Military Press", "Barbell Press"], "category": "SHOULDER_PRESS", "exerciseName": "OVERHEAD_BARBELL_PRESS"},
+    {"names": ["Arnold Press", "Arnold Dumbbell Press", "DB Arnold Press"], "category": "SHOULDER_PRESS", "exerciseName": "ARNOLD_PRESS"},
+    {"names": ["Push Press", "Push Press z dolgo palico", "Barbell Push Press", "Push Press BB"], "category": "SHOULDER_PRESS", "exerciseName": "PUSH_PRESS"},
+    {"names": ["Seated Barbell Overhead Press", "Seated Military Press", "Seated OHP"], "category": "SHOULDER_PRESS", "exerciseName": "SEATED_BARBELL_SHOULDER_PRESS"},
+    {"names": ["Machine Shoulder Press", "Machine Press", "Shoulder Press Machine"], "category": "SHOULDER_PRESS", "exerciseName": "MACHINE_SHOULDER_PRESS"},
+
+    {"names": ["Pull Up", "Pull-Up", "Assisted Pull-ups", "Assisted Pull Up", "Bodyweight Pull Up", "Weighted Pull Up"], "category": "PULL_UP", "exerciseName": "PULL_UP"},
+    {"names": ["Chin Up", "Chin-Up", "Underhand Pull Up", "Underhand Chin Up"], "category": "PULL_UP", "exerciseName": "CHIN_UP"},
+    {"names": ["Lat Pulldown", "Lat Pull-Down", "Lat Pull Down", "Cable Lat Pulldown", "Machine Lat Pulldown"], "category": "PULL_UP", "exerciseName": "LAT_PULLDOWN"},
+    {"names": ["Wide Grip Pull Up", "Wide Grip Pullup", "Wide Pull Up"], "category": "PULL_UP", "exerciseName": "WIDE_GRIP_PULL_UP"},
+    {"names": ["Neutral Grip Pull Up", "Hammer Grip Pull Up", "Parallel Grip Pull Up"], "category": "PULL_UP", "exerciseName": "NEUTRAL_GRIP_PULL_UP"},
+
+    {"names": ["Cable Row", "Seated Cable Row", "Low Cable Row", "Cable Seated Row", "Enorocno veslanje na skripcu", "One Arm Cable Row", "Single Arm Cable Row"], "category": "ROW", "exerciseName": "CABLE_ROW"},
+    {"names": ["Dumbbell Row", "DB Row", "One Arm Dumbbell Row", "Single Arm Row", "Single Arm DB Row"], "category": "ROW", "exerciseName": "DUMBBELL_ROW"},
+    {"names": ["Barbell Row", "Bent Over Row", "Bent-Over Row", "BB Row", "Barbell Bent Over Row"], "category": "ROW", "exerciseName": "BARBELL_ROW"},
+    {"names": ["Face Pull", "Face Pulls", "Cable Face Pull", "Rope Face Pull"], "category": "ROW", "exerciseName": "FACE_PULL"},
+    {"names": ["Renegade Row", "DB Renegade Row", "Dumbbell Renegade Row"], "category": "ROW", "exerciseName": "RENEGADE_ROW"},
+    {"names": ["T-Bar Row", "T Bar Row", "Landmine Row"], "category": "ROW", "exerciseName": "T_BAR_ROW"},
+    {"names": ["Inverted Row", "Bodyweight Row", "Australian Pull Up", "Ring Row"], "category": "ROW", "exerciseName": "INVERTED_ROW"},
+    {"names": ["Machine Row", "Chest Supported Row", "Hammer Strength Row"], "category": "ROW", "exerciseName": "MACHINE_ROW"},
+
+    {"names": ["Dumbbell Curl", "DB Curl", "Dumbbell Bicep Curl", "DB Bicep Curl", "Alternating DB Curl", "Alternating Dumbbell Curl"], "category": "CURL", "exerciseName": "DUMBBELL_BICEP_CURL"},
+    {"names": ["Barbell Curl", "BB Curl", "Barbell Bicep Curl", "EZ Bar Curl", "EZ Curl"], "category": "CURL", "exerciseName": "BARBELL_BICEP_CURL"},
+    {"names": ["Hammer Curl", "DB Hammer Curl", "Dumbbell Hammer Curl", "Neutral Grip Curl"], "category": "CURL", "exerciseName": "HAMMER_CURL"},
+    {"names": ["Preacher Curl", "Machine Preacher Curl", "EZ Bar Preacher Curl", "Cable Preacher Curl"], "category": "CURL", "exerciseName": "PREACHER_CURL"},
+    {"names": ["Concentration Curl", "Seated Concentration Curl", "DB Concentration Curl"], "category": "CURL", "exerciseName": "CONCENTRATION_CURL"},
+    {"names": ["Cable Curl", "Cable Bicep Curl", "Low Cable Curl"], "category": "CURL", "exerciseName": "CABLE_CURL"},
+    {"names": ["Incline Dumbbell Curl", "Incline DB Curl", "Incline Curl"], "category": "CURL", "exerciseName": "INCLINE_DUMBBELL_CURL"},
+
+    {"names": ["Triceps Pushdown", "Cable Pushdown", "Rope Pushdown", "Triceps Pulldown", "Cable Triceps Pushdown"], "category": "TRICEPS_EXTENSION", "exerciseName": "CABLE_TRICEPS_PUSHDOWN"},
+    {"names": ["Skull Crusher", "EZ Bar Skull Crusher", "Barbell Skull Crusher", "Lying Triceps Extension", "French Press"], "category": "TRICEPS_EXTENSION", "exerciseName": "SKULL_CRUSHER"},
+    {"names": ["Overhead Triceps Extension", "Overhead DB Triceps Extension", "DB Overhead Triceps", "Dumbbell Overhead Extension"], "category": "TRICEPS_EXTENSION", "exerciseName": "OVERHEAD_DUMBBELL_TRICEPS_EXTENSION"},
+    {"names": ["Triceps Dip", "Bench Dip", "Chair Dip", "Parallel Bar Dip"], "category": "TRICEPS_EXTENSION", "exerciseName": "BENCH_DIP"},
+    {"names": ["Close Grip Push Up", "Diamond Push Up", "Triceps Push Up"], "category": "TRICEPS_EXTENSION", "exerciseName": "CLOSE_GRIP_PUSH_UP"},
+
+    {"names": ["Push Up", "Push-Up", "Standard Push Up", "Bodyweight Push Up"], "category": "PUSH_UP", "exerciseName": "PUSH_UP"},
+    {"names": ["Weighted Dip", "Dip", "Dips", "Weighted/Assisted Dips", "Assisted Dip", "Bar Dip", "Parallel Bar Dips", "Ring Dip"], "category": "PUSH_UP", "exerciseName": "DIP"},
+    {"names": ["Pike Push Up", "Pike Push-Up", "Handstand Push Up Progression"], "category": "PUSH_UP", "exerciseName": "PIKE_PUSH_UP"},
+    {"names": ["Incline Push Up", "Elevated Push Up", "Hands Elevated Push Up"], "category": "PUSH_UP", "exerciseName": "INCLINE_PUSH_UP"},
+    {"names": ["Decline Push Up", "Feet Elevated Push Up"], "category": "PUSH_UP", "exerciseName": "DECLINE_PUSH_UP"},
+
+    {"names": ["Lateral Raise", "Lateral Raises", "DB Lateral Raise", "Dumbbell Lateral Raise", "Side Raise", "Side Lateral Raise"], "category": "LATERAL_RAISE", "exerciseName": "LATERAL_RAISE"},
+    {"names": ["Cable Lateral Raise", "Low Cable Lateral Raise", "Single Arm Cable Lateral Raise"], "category": "LATERAL_RAISE", "exerciseName": "CABLE_LATERAL_RAISE"},
+    {"names": ["Machine Lateral Raise", "Pec Deck Lateral Raise"], "category": "LATERAL_RAISE", "exerciseName": "MACHINE_LATERAL_RAISE"},
+
+    {"names": ["Glute Bridge", "Glute Bridges", "Bodyweight Glute Bridge", "Corength Glute Bridges", "Corenght Glute Bridges", "Banded Glute Bridge", "Weighted Glute Bridge"], "category": "HIP_RAISE", "exerciseName": "GLUTE_BRIDGE"},
+    {"names": ["Hip Thrust", "Barbell Hip Thrust", "Banded Hip Thrust", "Dumbbell Hip Thrust", "DB Hip Thrust"], "category": "HIP_RAISE", "exerciseName": "BARBELL_HIP_THRUST"},
+    {"names": ["Single Leg Glute Bridge", "Single-Leg Glute Bridge", "One Leg Glute Bridge"], "category": "HIP_RAISE", "exerciseName": "SINGLE_LEG_GLUTE_BRIDGE"},
+    {"names": ["Frog Pump", "Frog Bridge", "Banded Frog Pump"], "category": "HIP_RAISE", "exerciseName": "FROG_PUMP"},
+
+    {"names": ["Kettlebell Swing", "KB Swing", "Two-Hand KB Swing", "Two Hand Kettlebell Swing", "American Kettlebell Swing"], "category": "HIP_SWING", "exerciseName": "KETTLEBELL_SWING"},
+    {"names": ["Single Arm Kettlebell Swing", "One Arm KB Swing", "Single Hand KB Swing"], "category": "HIP_SWING", "exerciseName": "SINGLE_ARM_KETTLEBELL_SWING"},
+
+    {"names": ["Crunch", "Basic Crunch", "Abdominal Crunch", "Bodyweight Crunch"], "category": "CRUNCH", "exerciseName": "CRUNCH"},
+    {"names": ["Reverse Crunch", "Foam Roller Reverse Crunch", "Lying Reverse Crunch", "Hip Raise Crunch"], "category": "CRUNCH", "exerciseName": "REVERSE_CRUNCH"},
+    {"names": ["Bicycle Crunch", "Bicycle Kick", "Alternating Bicycle Crunch"], "category": "CRUNCH", "exerciseName": "BICYCLE_CRUNCH"},
+    {"names": ["Cable Crunch", "Rope Cable Crunch", "Kneeling Cable Crunch"], "category": "CRUNCH", "exerciseName": "CABLE_CRUNCH"},
+    {"names": ["Sit Up", "Sit-Up", "Full Sit Up", "Weighted Sit Up"], "category": "CRUNCH", "exerciseName": "SIT_UP"},
+
+    {"names": ["Hanging Knee Raise", "Hanging Knee Raises", "Bent Knee Hanging Leg Raise", "Captains Chair Knee Raise", "Captain's Chair Knee Raise"], "category": "LEG_RAISE", "exerciseName": "HANGING_KNEE_RAISE"},
+    {"names": ["Hanging Leg Raise", "Straight Leg Hanging Raise", "Toes to Bar", "Toes-to-Bar"], "category": "LEG_RAISE", "exerciseName": "HANGING_LEG_RAISE"},
+    {"names": ["Lying Leg Raise", "Flat Leg Raise", "Supine Leg Raise"], "category": "LEG_RAISE", "exerciseName": "LYING_LEG_RAISE"},
+
+    {"names": ["Plank", "Forearm Plank", "Front Plank", "Abdominal Plank"], "category": "PLANK", "exerciseName": "PLANK"},
+    {"names": ["Side Plank", "Lateral Plank", "Side Bridge"], "category": "PLANK", "exerciseName": "SIDE_PLANK"},
+
+    {"names": ["Calf Raise", "Standing Calf Raise", "Bodyweight Calf Raise", "Barbell Calf Raise"], "category": "CALF_RAISE", "exerciseName": "CALF_RAISE"},
+    {"names": ["Seated Calf Raise", "Machine Seated Calf Raise"], "category": "CALF_RAISE", "exerciseName": "SEATED_CALF_RAISE"},
+
+    {"names": ["Barbell Shrug", "Shrug", "BB Shrug", "Dumbbell Shrug", "DB Shrug", "Trap Bar Shrug"], "category": "SHRUG", "exerciseName": "BARBELL_SHRUG"}
+  ]
+}
