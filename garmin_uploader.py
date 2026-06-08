@@ -71,7 +71,7 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Dips":                         ("PUSH_UP",           "DIP"),
     "Push-up":                      ("PUSH_UP",           "PUSH_UP"),
     "Dumbbell Shoulder Press":      ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
-    "Incline Dumbbell Bench Press": ("BENCH_PRESS",       "INCLINE_DUMBBELL_BENCH_PRESS"),
+    "Incline Dumbbell Bench Press": ("PUSH_UP",            "INCLINE_DUMBBELL_BENCH_PRESS"),
     "Lateral Raises":               ("LATERAL_RAISE",     "LATERAL_RAISE"),
     "Lateral Raise":                ("LATERAL_RAISE",     "LATERAL_RAISE"),
     "Reverse Crunch":               ("CRUNCH",            "REVERSE_CRUNCH"),
@@ -90,8 +90,8 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Lat Pulldown":                 ("PULL_UP",           "LAT_PULLDOWN"),
     "Cable Row":                    ("ROW",               "CABLE_ROW"),
     "Row":                          ("ROW",               "CABLE_ROW"),
-    "Face Pulls":                   ("ROW",               "FACE_PULL"),
-    "Face Pull":                    ("ROW",               "FACE_PULL"),
+    "Face Pulls":                   ("SHOULDER_STABILITY", "FACE_PULL"),
+    "Face Pull":                    ("SHOULDER_STABILITY", "FACE_PULL"),
     "Dumbbell Bicep Curl":          ("CURL",              "DUMBBELL_BICEP_CURL"),
     "Curl":                         ("CURL",              "DUMBBELL_BICEP_CURL"),
     "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
@@ -105,7 +105,7 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Leg Raise":                    ("LEG_RAISE",         "LYING_LEG_RAISE"),
 
     # ---- Garmin taxonomy mapped exercises -----------------------------------
-    "Kettlebell Floor to Shelf":    ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
+    "Kettlebell Floor to Shelf":    ("TOTAL_BODY",        "KETTLEBELL_FLOOR_TO_SHELF"),
 }
 
 # Default token store path (saves session after first login → no 2FA next time)

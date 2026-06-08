@@ -2,6 +2,7 @@
 find_valid_categories.py
 Tests each suspect exercise category against Garmin's API and
 prints which ones are accepted vs rejected.
+Week 3 — Beach Body 2026 taxonomy validation.
 Token is cached so no 2FA needed.
 """
 import json, os, sys, time
@@ -21,22 +22,28 @@ client = Garmin(os.getenv("GARMIN_EMAIL"), os.getenv("GARMIN_PASSWORD"), prompt_
 client.login(TOKENSTORE)
 print("Logged in (no MFA needed).\n")
 
-# All suspect categories — Trening B passed so those are excluded
+# Week 3 — Beach Body 2026: all categories requiring API validation
+# Trening B (Squat/Lunge/HipSwing/HipRaise) passed previously; excluded here.
 SUSPECTS = {
     # Trening A
-    "DIP":            ("DIP",            "DIP"),
+    "PUSH_UP":        ("PUSH_UP",        "PUSH_UP"),               # Replaced legacy DIP selection
     "SHOULDER_PRESS": ("SHOULDER_PRESS", "DUMBBELL_SHOULDER_PRESS"),
+    "CHEST_PRESS":    ("CHEST_PRESS",    "INCLINE_DUMBBELL_BENCH_PRESS"),  # Validating Incline Press profile
     "LATERAL_RAISE":  ("LATERAL_RAISE",  "LATERAL_RAISE"),
     "CRUNCH":         ("CRUNCH",         "REVERSE_CRUNCH"),
+
     # Trening C
     "PULL_UP":        ("PULL_UP",        "PULL_UP"),
     "LAT_PULL_DOWN":  ("LAT_PULL_DOWN",  "LAT_PULLDOWN"),
     "ROW":            ("ROW",            "CABLE_ROW"),
-    "FLY":            ("FLY",            "FACE_PULL"),
+    "SHOULDER_STABILITY": ("SHOULDER_STABILITY", "FACE_PULL"),    # API stability bypass alternative for FLY
+
     # Trening D
     "PUSH_PRESS":     ("PUSH_PRESS",     "PUSH_PRESS"),
+    "RENEGADE_ROW":   ("ROW",            "RENEGADE_ROW"),          # Validating integrated Trening D rowing
     "STEP_UP":        ("STEP_UP",        "STEP_UP"),
-    "LEG_RAISE":      ("LEG_RAISE",      "HANGING_KNEE_RAISE"),
+    "FLOOR_TO_SHELF": ("TOTAL_BODY",     "KETTLEBELL_FLOOR_TO_SHELF"),  # Validating KB Halo structural mapping
+    "LEG_RAISE":      ("LEG_RAISE",      "LEG_RAISE"),             # Cleaned up from HANGING_KNEE_RAISE to floor version
 }
 
 STROKE    = {"strokeTypeId": 0, "strokeTypeKey": None, "displayOrder": 0}
