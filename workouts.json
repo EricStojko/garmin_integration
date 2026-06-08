@@ -1,8 +1,8 @@
 {
   "week": 3,
-  "notes": "Beach Body 2026. Focus on progressive overload and eliminating unilateral asymmetry (left arm dictates the volume/tempo).",
+  "notes": "Beach Body 2026. CRITICAL UPDATE: Left shoulder prehab protocol activated. Replaced vertical overhead volume and deep incline angles with neutral scapular plane pressing (Landmine & Floor Press). Do not push past pain thresholds.",
   "schedule": {
-    "Monday": "Trening A (Potiski)",
+    "Monday": "Trening A (Potiski - Shoulder Safe)",
     "Tuesday": "Trening B (Spodnji del)",
     "Wednesday": "Aktivni počitek (LISS & Raztegovanje)",
     "Thursday": "Trening C (Vlečenja)",
@@ -13,13 +13,13 @@
   "workouts": [
     {
       "id": "trening_a",
-      "name": "Trening A (Potiski)",
+      "name": "Trening A (Potiski - Shoulder Safe)",
       "exercises": [
-        { "name": "Push-up", "sets": 4, "reps": 11, "weight_kg": null, "notes": "Safe alternative to dips. Controlled eccentric phase." },
-        { "name": "Dumbbell Shoulder Press", "sets": 3, "reps": 10, "weight_kg": 7.5, "notes": "Baseline set at 7.5kg. Left shoulder dictates the pace." },
-        { "name": "Incline Dumbbell Bench Press", "sets": 3, "reps": 10, "weight_kg": 12.5, "notes": "Fixed at 12.5kg per dumbbell." },
-        { "name": "Lateral Raise", "sets": 4, "reps": 11, "weight_kg": 7.5, "notes": "Strict form. Eliminate momentum or torso swinging." },
-        { "name": "Reverse Crunch", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Floor execution to protect the lower back." }
+        { "name": "Push-up", "sets": 4, "reps": 11, "weight_kg": null, "notes": "Mandatory warm-up. Stop 2 reps before failure to keep shoulders fresh." },
+        { "name": "Shoulder Press", "sets": 3, "reps": 10, "weight_kg": 7.5, "notes": "EXECUTE AS: Single-Arm Landmine Press. Safe angled press in the scapular plane to protect the left shoulder." },
+        { "name": "Floor Press", "sets": 3, "reps": 10, "weight_kg": 12.5, "notes": "Dumbbell potisk s tal. Triceps and chest focus. The floor blocks elbows from dipping too low, completely unloading the shoulder capsule." },
+        { "name": "Lateral Raise", "sets": 4, "reps": 11, "weight_kg": 5.0, "notes": "Strict form. Dropped to 5kg permanently for Week 3 to focus on lateral delt isolation without upper trapezius compensation." },
+        { "name": "Reverse Crunch", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Floor core activation. Slow and controlled tempo." }
       ]
     },
     {

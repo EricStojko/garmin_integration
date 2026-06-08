@@ -28,6 +28,7 @@
     {"names": ["Single Leg Deadlift", "Single-Leg RDL", "Dumbbell Single Leg Deadlift", "DB Single Leg Deadlift"], "category": "DEADLIFT", "exerciseName": "SINGLE_LEG_DEADLIFT"},
 
     {"names": ["Barbell Bench Press", "Flat Bench Press", "BB Bench Press", "Bench Press", "Potisk s prsi"], "category": "BENCH_PRESS", "exerciseName": "BARBELL_BENCH_PRESS"},
+    {"names": ["Floor Press", "Dumbbell Floor Press", "DB Floor Press", "Dumbbell potisk s tal"], "category": "BENCH_PRESS", "exerciseName": "DUMBBELL_FLOOR_PRESS"},
     {"names": ["Incline Dumbbell Bench Press", "Incline DB Bench Press", "Incline Dumbbell Press", "Incline DB Press", "Poševni potisk z ročkami"], "category": "PUSH_UP", "exerciseName": "INCLINE_DUMBBELL_BENCH_PRESS"},
     {"names": ["Incline Barbell Bench Press", "Incline BB Bench Press", "Incline Barbell Press"], "category": "BENCH_PRESS", "exerciseName": "INCLINE_BARBELL_BENCH_PRESS"},
     {"names": ["Decline Bench Press", "Decline Barbell Bench Press", "Decline BB Bench Press"], "category": "BENCH_PRESS", "exerciseName": "DECLINE_BARBELL_BENCH_PRESS"},

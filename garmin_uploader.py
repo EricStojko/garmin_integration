@@ -72,28 +72,29 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Push-up":                      ("PUSH_UP",           "PUSH_UP"),
     "Dumbbell Shoulder Press":      ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
     "Incline Dumbbell Bench Press": ("PUSH_UP",            "INCLINE_DUMBBELL_BENCH_PRESS"),
-    "Lateral Raises":               ("LATERAL_RAISE",     "LATERAL_RAISE"),
-    "Lateral Raise":                ("LATERAL_RAISE",     "LATERAL_RAISE"),
+    "Floor Press":                  ("BENCH_PRESS",       "DUMBBELL_FLOOR_PRESS"),
+    "Lateral Raises":               ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
+    "Lateral Raise":                ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
     "Reverse Crunch":               ("CRUNCH",            "REVERSE_CRUNCH"),
 
     # ---- Trening B (Spodnji del / Lower Body) --------------------------------
     "Goblet Squat":                 ("SQUAT",             "GOBLET_SQUAT"),
     "Bulgarian Split Squat":        ("LUNGE",             "BULGARIAN_SPLIT_SQUAT"),
     "Lunge":                        ("LUNGE",             "LUNGE"),
-    "Kettlebell Swing":             ("HIP_SWING",         "KETTLEBELL_SWING"),
-    "Glute Bridge":                 ("HIP_RAISE",         "GLUTE_BRIDGE"),
-    "Hip Raise":                    ("HIP_RAISE",         "GLUTE_BRIDGE"),
+    "Kettlebell Swing":             ("HIP_SWING",         "SINGLE_ARM_KETTLEBELL_SWING"),
+    "Glute Bridge":                 ("HIP_RAISE",         "HIP_RAISE"),
+    "Hip Raise":                    ("HIP_RAISE",         "HIP_RAISE"),
 
     # ---- Trening C (Vlecenja / Pull) -----------------------------------------
     "Pull Ups":                     ("PULL_UP",           "PULL_UP"),
     "Pull-up":                      ("PULL_UP",           "PULL_UP"),
     "Lat Pulldown":                 ("PULL_UP",           "LAT_PULLDOWN"),
-    "Cable Row":                    ("ROW",               "CABLE_ROW"),
-    "Row":                          ("ROW",               "CABLE_ROW"),
-    "Face Pulls":                   ("SHOULDER_STABILITY", "FACE_PULL"),
-    "Face Pull":                    ("SHOULDER_STABILITY", "FACE_PULL"),
-    "Dumbbell Bicep Curl":          ("CURL",              "DUMBBELL_BICEP_CURL"),
-    "Curl":                         ("CURL",              "DUMBBELL_BICEP_CURL"),
+    "Cable Row":                    ("ROW",               "SEATED_CABLE_ROW"),
+    "Row":                          ("ROW",               "SEATED_CABLE_ROW"),
+    "Face Pulls":                   ("ROW",               "FACE_PULL"),
+    "Face Pull":                    ("ROW",               "FACE_PULL"),
+    "Dumbbell Bicep Curl":          ("PULL_UP",           "CHIN_UP"),
+    "Curl":                         ("PULL_UP",           "CHIN_UP"),
     "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
 
     # ---- Trening D (Conditioning) --------------------------------------------
@@ -102,10 +103,10 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Renegade Row":                 ("ROW",               "RENEGADE_ROW"),
     "Step Up":                      ("LUNGE",             "STEP_UP"),
     "Hanging Knee Raises":          ("LEG_RAISE",         "HANGING_KNEE_RAISE"),
-    "Leg Raise":                    ("LEG_RAISE",         "LYING_LEG_RAISE"),
+    "Leg Raise":                    ("LEG_RAISE",         "HANGING_KNEE_RAISE"),
 
     # ---- Garmin taxonomy mapped exercises -----------------------------------
-    "Kettlebell Floor to Shelf":    ("TOTAL_BODY",        "KETTLEBELL_FLOOR_TO_SHELF"),
+    "Kettlebell Floor to Shelf":    ("HIP_SWING",         "SINGLE_ARM_KETTLEBELL_SWING"),
 }
 
 # Default token store path (saves session after first login → no 2FA next time)
