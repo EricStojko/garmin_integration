@@ -81,6 +81,7 @@
     {"names": ["Machine Lateral Raise", "Pec Deck Lateral Raise"], "category": "LATERAL_RAISE", "exerciseName": "MACHINE_LATERAL_RAISE"},
 
     {"names": ["Glute Bridge", "Glute Bridges", "Bodyweight Glute Bridge", "Corength Glute Bridges", "Corenght Glute Bridges", "Banded Glute Bridge", "Weighted Glute Bridge", "Dvig bokov"], "category": "HIP_RAISE", "exerciseName": "GLUTE_BRIDGE"},
+    {"names": ["Hip Raise", "Hip Raises", "Banded Hip Raise", "Glute Bridge Hip Raise", "Dvig bokov z elastiko"], "category": "HIP_RAISE", "exerciseName": "GLUTE_BRIDGE"},
     {"names": ["Hip Thrust", "Barbell Hip Thrust", "Banded Hip Thrust", "Dumbbell Hip Thrust", "DB Hip Thrust"], "category": "HIP_RAISE", "exerciseName": "BARBELL_HIP_THRUST"},
     {"names": ["Single Leg Glute Bridge", "Single-Leg Glute Bridge", "One Leg Glute Bridge"], "category": "HIP_RAISE", "exerciseName": "SINGLE_LEG_GLUTE_BRIDGE"},
     {"names": ["Frog Pump", "Frog Bridge", "Banded Frog Pump"], "category": "HIP_RAISE", "exerciseName": "FROG_PUMP"},
