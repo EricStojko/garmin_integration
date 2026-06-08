@@ -26,25 +26,26 @@ print("Logged in (no MFA needed).\n")
 # Trening B (Squat/Lunge/HipSwing/HipRaise) passed previously; excluded here.
 SUSPECTS = {
     # Trening A
-    "PUSH_UP":        ("PUSH_UP",        "PUSH_UP"),               # Replaced legacy DIP selection
+    "PUSH_UP":        ("PUSH_UP",        "PUSH_UP"),
     "SHOULDER_PRESS": ("SHOULDER_PRESS", "DUMBBELL_SHOULDER_PRESS"),
-    "CHEST_PRESS":    ("CHEST_PRESS",    "INCLINE_DUMBBELL_BENCH_PRESS"),  # Validating Incline Press profile
+    "CHEST_PRESS":    ("CHEST_PRESS",    "INCLINE_DUMBBELL_BENCH_PRESS"),
     "LATERAL_RAISE":  ("LATERAL_RAISE",  "LATERAL_RAISE"),
     "CRUNCH":         ("CRUNCH",         "REVERSE_CRUNCH"),
 
     # Trening C
     "PULL_UP":        ("PULL_UP",        "PULL_UP"),
-    "LAT_PULL_DOWN":  ("LAT_PULL_DOWN",  "LAT_PULLDOWN"),
+    "LAT_PULLDOWN":   ("PULL_DOWN",      "LAT_PULLDOWN"),              # Aligned baseline: PULL_DOWN + LAT_PULLDOWN
     "ROW":            ("ROW",            "CABLE_ROW"),
-    "SHOULDER_STABILITY": ("SHOULDER_STABILITY", "FACE_PULL"),    # API stability bypass alternative for FLY
+    "FACE_PULL":      ("SHOULDER_STABILITY", "FACE_PULL"),            # Aligned baseline: SHOULDER_STABILITY + FACE_PULL
 
     # Trening D
     "PUSH_PRESS":     ("PUSH_PRESS",     "PUSH_PRESS"),
-    "RENEGADE_ROW":   ("ROW",            "RENEGADE_ROW"),          # Validating integrated Trening D rowing
+    "RENEGADE_ROW":   ("ROW",            "RENEGADE_ROW"),
     "STEP_UP":        ("STEP_UP",        "STEP_UP"),
-    "FLOOR_TO_SHELF": ("TOTAL_BODY",     "KETTLEBELL_FLOOR_TO_SHELF"),  # Validating KB Halo structural mapping
-    "LEG_RAISE":      ("LEG_RAISE",      "LEG_RAISE"),             # Cleaned up from HANGING_KNEE_RAISE to floor version
+    "FLOOR_TO_SHELF": ("TOTAL_BODY",     "KETTLEBELL_FLOOR_TO_SHELF"),
+    "LEG_RAISE":      ("LEG_RAISE",      "LEG_RAISE"),
 }
+
 
 STROKE    = {"strokeTypeId": 0, "strokeTypeKey": None, "displayOrder": 0}
 EQUIP     = {"equipmentTypeId": 0, "equipmentTypeKey": None, "displayOrder": 0}
