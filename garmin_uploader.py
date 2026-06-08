@@ -69,30 +69,43 @@ logger = logging.getLogger(__name__)
 GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     # ---- Trening A (Potiski / Push) ----------------------------------------
     "Dips":                         ("PUSH_UP",           "DIP"),
+    "Push-up":                      ("PUSH_UP",           "PUSH_UP"),
     "Dumbbell Shoulder Press":      ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
     "Incline Dumbbell Bench Press": ("BENCH_PRESS",       "INCLINE_DUMBBELL_BENCH_PRESS"),
     "Lateral Raises":               ("LATERAL_RAISE",     "LATERAL_RAISE"),
+    "Lateral Raise":                ("LATERAL_RAISE",     "LATERAL_RAISE"),
     "Reverse Crunch":               ("CRUNCH",            "REVERSE_CRUNCH"),
 
     # ---- Trening B (Spodnji del / Lower Body) --------------------------------
     "Goblet Squat":                 ("SQUAT",             "GOBLET_SQUAT"),
     "Bulgarian Split Squat":        ("LUNGE",             "BULGARIAN_SPLIT_SQUAT"),
+    "Lunge":                        ("LUNGE",             "LUNGE"),
     "Kettlebell Swing":             ("HIP_SWING",         "KETTLEBELL_SWING"),
     "Glute Bridge":                 ("HIP_RAISE",         "GLUTE_BRIDGE"),
+    "Hip Raise":                    ("HIP_RAISE",         "GLUTE_BRIDGE"),
 
     # ---- Trening C (Vlecenja / Pull) -----------------------------------------
     "Pull Ups":                     ("PULL_UP",           "PULL_UP"),
+    "Pull-up":                      ("PULL_UP",           "PULL_UP"),
     "Lat Pulldown":                 ("PULL_UP",           "LAT_PULLDOWN"),
     "Cable Row":                    ("ROW",               "CABLE_ROW"),
+    "Row":                          ("ROW",               "CABLE_ROW"),
     "Face Pulls":                   ("ROW",               "FACE_PULL"),
+    "Face Pull":                    ("ROW",               "FACE_PULL"),
     "Dumbbell Bicep Curl":          ("CURL",              "DUMBBELL_BICEP_CURL"),
+    "Curl":                         ("CURL",              "DUMBBELL_BICEP_CURL"),
     "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
 
     # ---- Trening D (Conditioning) --------------------------------------------
     "Push Press":                   ("SHOULDER_PRESS",    "PUSH_PRESS"),
+    "Shoulder Press":               ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
     "Renegade Row":                 ("ROW",               "RENEGADE_ROW"),
     "Step Up":                      ("LUNGE",             "STEP_UP"),
     "Hanging Knee Raises":          ("LEG_RAISE",         "HANGING_KNEE_RAISE"),
+    "Leg Raise":                    ("LEG_RAISE",         "LYING_LEG_RAISE"),
+
+    # ---- Garmin taxonomy mapped exercises -----------------------------------
+    "Kettlebell Floor to Shelf":    ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
 }
 
 # Default token store path (saves session after first login → no 2FA next time)
@@ -329,8 +342,10 @@ def build_garmin_workout(json_workout: dict) -> dict:
     """
     if "name" not in json_workout:
         raise ValueError("Workout is missing the required 'name' field.")
-    if not json_workout.get("steps"):
-        raise ValueError(f"Workout '{json_workout['name']}' has no 'steps' defined.")
+    # Support both new schema ('exercises') and legacy schema ('steps')
+    exercise_list = json_workout.get("exercises") or json_workout.get("steps")
+    if not exercise_list:
+        raise ValueError(f"Workout '{json_workout['name']}' has no 'exercises' or 'steps' defined.")
 
     workout_name          = json_workout["name"]
     between_exercise_rest = float(
@@ -340,7 +355,7 @@ def build_garmin_workout(json_workout: dict) -> dict:
     group_order    = 1         # stepOrder counter — incremented for every appended step
     child_step_id  = 1         # each RepeatGroup gets its own childStepId (1, 2, 3 …)
     unmapped       = []
-    exercises      = json_workout["steps"]
+    exercises      = exercise_list
     n_exercises    = len(exercises)
 
     for idx, exercise in enumerate(exercises):
@@ -354,8 +369,9 @@ def build_garmin_workout(json_workout: dict) -> dict:
         custom_name: str = exercise["name"]
         reps:        int = int(exercise["reps"])
         sets:        int = int(exercise["sets"])
-        note:        str = exercise.get("note", "")
-        weight           = exercise.get("weight")
+        # Support both new ('notes', 'weight_kg') and legacy ('note', 'weight') field names
+        note:        str = exercise.get("notes") or exercise.get("note", "")
+        weight           = exercise.get("weight_kg") if exercise.get("weight_kg") is not None else exercise.get("weight")
 
         mapping = GARMIN_EXERCISE_MAP.get(custom_name)
         if mapping is not None:

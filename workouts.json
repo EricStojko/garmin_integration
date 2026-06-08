@@ -1,139 +1,57 @@
 {
+  "week": 3,
+  "notes": "Beach Body 2026. Focus on progressive overload and eliminating unilateral asymmetry (left arm dictates the volume/tempo).",
+  "schedule": {
+    "Monday": "Trening A (Potiski)",
+    "Tuesday": "Trening B (Spodnji del)",
+    "Wednesday": "Aktivni počitek (LISS & Raztegovanje)",
+    "Thursday": "Trening C (Vlečenja)",
+    "Friday": "Aktivni počitek (LISS & Raztegovanje)",
+    "Saturday": "Trening D (Conditioning)",
+    "Sunday": "Popolni OFF (Dolgi LISS sprehod)"
+  },
   "workouts": [
     {
-      "name": "Beach Body 2026 - Trening A (Potiski)",
-      "between_exercise_rest": 120,
-      "steps": [
-        {
-          "name": "Dips",
-          "reps": 7,
-          "sets": 4,
-          "note": "Kletka + elastika. RPE 8.5. Fokus na komolce."
-        },
-        {
-          "name": "Dumbbell Shoulder Press",
-          "reps": 10,
-          "sets": 3,
-          "note": "Klop 75deg. Zacni z LEVO roko!"
-        },
-        {
-          "name": "Incline Dumbbell Bench Press",
-          "reps": 10,
-          "sets": 3,
-          "note": "Klop 30deg. Kontroliran spust 3 sekunde."
-        },
-        {
-          "name": "Lateral Raises",
-          "reps": 13,
-          "sets": 4,
-          "note": "DB ali spodnji skripec. RPE 9."
-        },
-        {
-          "name": "Reverse Crunch",
-          "reps": 15,
-          "sets": 3,
-          "note": "Pocasen izteg, varuj spodnji hrbet."
-        }
+      "id": "trening_a",
+      "name": "Trening A (Potiski)",
+      "exercises": [
+        { "name": "Push-up", "sets": 4, "reps": 11, "weight_kg": null, "notes": "Safe alternative to dips. Controlled eccentric phase." },
+        { "name": "Dumbbell Shoulder Press", "sets": 3, "reps": 10, "weight_kg": 7.5, "notes": "Baseline set at 7.5kg. Left shoulder dictates the pace." },
+        { "name": "Incline Dumbbell Bench Press", "sets": 3, "reps": 10, "weight_kg": 12.5, "notes": "Fixed at 12.5kg per dumbbell." },
+        { "name": "Lateral Raise", "sets": 4, "reps": 11, "weight_kg": 7.5, "notes": "Strict form. Eliminate momentum or torso swinging." },
+        { "name": "Reverse Crunch", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Floor execution to protect the lower back." }
       ]
     },
     {
-      "name": "Beach Body 2026 - Trening B (Spodnji del)",
-      "between_exercise_rest": 120,
-      "steps": [
-        {
-          "name": "Goblet Squat",
-          "reps": 11,
-          "sets": 4,
-          "weight": 16.0,
-          "note": "KB 16kg ali tezji DB. 1s pauza na dnu."
-        },
-        {
-          "name": "Bulgarian Split Squat",
-          "reps": 9,
-          "sets": 3,
-          "note": "Klop + DBs. Stabilizacija bokov in piriformisa."
-        },
-        {
-          "name": "Kettlebell Swing",
-          "reps": 20,
-          "sets": 4,
-          "weight": 16.0,
-          "note": "KB 16kg. Cista eksplozivnost iz bokov (45 sek AMRAP)."
-        },
-        {
-          "name": "Glute Bridge",
-          "reps": 15,
-          "sets": 3,
-          "note": "Elastika okoli kolen. Stisk zadnjice."
-        }
+      "id": "trening_b",
+      "name": "Trening B (Spodnji del)",
+      "exercises": [
+        { "name": "Goblet Squat", "sets": 4, "reps": 11, "weight_kg": 16.0, "notes": "1-second pause at the bottom to protect the spine." },
+        { "name": "Lunge", "sets": 3, "reps": 9, "weight_kg": 5.0, "notes": "Bulgarian split squats on bench for piriformis stabilization." },
+        { "name": "Kettlebell Swing", "sets": 4, "reps": 20, "weight_kg": 16.0, "notes": "Explosive hip hinge, tight core engagement." },
+        { "name": "Hip Raise", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Glute bridge with resistance band, strong peak contraction." }
       ]
     },
     {
-      "name": "Beach Body 2026 - Trening C (Vlecenja)",
-      "between_exercise_rest": 120,
-      "steps": [
-        {
-          "name": "Pull Ups",
-          "reps": 7,
-          "sets": 4,
-          "note": "Kletka + elastika. Kontroliran spust."
-        },
-        {
-          "name": "Lat Pulldown",
-          "reps": 10,
-          "sets": 3,
-          "note": "Kingsgym Lat Machine. Do kljucnice."
-        },
-        {
-          "name": "Cable Row",
-          "reps": 11,
-          "sets": 3,
-          "note": "Kingsgym Pulley. Brez rotacije trupa."
-        },
-        {
-          "name": "Face Pulls",
-          "reps": 15,
-          "sets": 4,
-          "note": "Skripec. Kljucno za zdravje leve rame!"
-        },
-        {
-          "name": "Dumbbell Bicep Curl",
-          "reps": 12,
-          "sets": 3,
-          "weight": 10.0,
-          "note": "Superset z tricepsom. Leva roka narekuje volumen."
-        }
+      "id": "trening_c",
+      "name": "Trening C (Vlečenja)",
+      "exercises": [
+        { "name": "Pull-up", "sets": 4, "reps": 6, "weight_kg": null, "notes": "Assisted with power band on the cage. Focus on the lats." },
+        { "name": "Lat Pulldown", "sets": 3, "reps": 10, "weight_kg": 34.0, "notes": "Drive elbows down. Maintain safe tracking for left shoulder." },
+        { "name": "Row", "sets": 3, "reps": 8, "weight_kg": 20.0, "notes": "Seated cable rows. Strict positioning without spinal rotation." },
+        { "name": "Face Pull", "sets": 4, "reps": 15, "weight_kg": 15.0, "notes": "Crucial prehab for rotator cuff and posterior deltoid health." },
+        { "name": "Curl", "sets": 3, "reps": 12, "weight_kg": 10.0, "notes": "Dumbbell bicep curls. Left arm failure dictates set completion." }
       ]
     },
     {
-      "name": "Beach Body 2026 - Trening D (Conditioning)",
-      "between_exercise_rest": 60,
-      "steps": [
-        {
-          "name": "Push Press",
-          "reps": 6,
-          "sets": 4,
-          "note": "Uporabi krajso T-bar palico! Moc iz nog, zakljuci z rameni."
-        },
-        {
-          "name": "Renegade Row",
-          "reps": 10,
-          "sets": 3,
-          "note": "V poziciji skleca na DB. Core stabilnost."
-        },
-        {
-          "name": "Step Up",
-          "reps": 20,
-          "sets": 3,
-          "weight": 16.0,
-          "note": "Gymbeam stepper + 2x 8kg KB."
-        },
-        {
-          "name": "Lying Leg Raises",
-          "reps": 12,
-          "sets": 3,
-          "note": "Lezi na tleh, z rokami se drzi za kletko zadaj. Pocasen spust nog."
-        }
+      "id": "trening_d",
+      "name": "Trening D (Conditioning)",
+      "exercises": [
+        { "name": "Shoulder Press", "sets": 4, "reps": 9, "weight_kg": 12.0, "notes": "Short T-bar landmine press." },
+        { "name": "Renegade Row", "sets": 3, "reps": 10, "weight_kg": 5.0, "notes": "Maintain stable hips in plank position." },
+        { "name": "Lunge", "sets": 3, "reps": 20, "weight_kg": 16.0, "notes": "High-volume weighted step-ups for metabolic conditioning." },
+        { "name": "Kettlebell Floor to Shelf", "sets": 3, "reps": 10, "weight_kg": 12.0, "notes": "KB Halo + Strict Press Combo. Mapped to Garmin taxonomy." },
+        { "name": "Leg Raise", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Lying leg raises for lower abs. Protect lumbar spine." }
       ]
     }
   ]
