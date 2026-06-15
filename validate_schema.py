@@ -5,7 +5,7 @@ with open('workouts.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Top-level keys
-assert data.get('week') == 3, 'week != 3'
+assert data.get('week') == 4, 'week != 4'
 assert 'notes' in data, 'missing notes'
 assert 'schedule' in data, 'missing schedule'
 assert 'workouts' in data, 'missing workouts'

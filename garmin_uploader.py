@@ -96,6 +96,7 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Dumbbell Bicep Curl":          ("PULL_UP",           "CHIN_UP"),
     "Curl":                         ("PULL_UP",           "CHIN_UP"),
     "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
+    "Triceps Extension":            ("TRICEPS_EXTENSION", ""),
 
     # ---- Trening D (Conditioning) --------------------------------------------
     "Push Press":                   ("SHOULDER_PRESS",    "PUSH_PRESS"),
@@ -359,59 +360,75 @@ def build_garmin_workout(json_workout: dict) -> dict:
     exercises      = exercise_list
     n_exercises    = len(exercises)
 
-    for idx, exercise in enumerate(exercises):
-        # Validate required fields
-        for key in ("name", "reps", "sets"):
-            if key not in exercise:
-                raise ValueError(
-                    f"Exercise in '{workout_name}' is missing '{key}': {exercise}"
-                )
+    idx = 0
+    while idx < n_exercises:
+        exercise = exercises[idx]
+        note_str = exercise.get("notes") or exercise.get("note", "")
+        is_superset = "SUPERSET BLOCK:" in note_str
 
-        custom_name: str = exercise["name"]
-        reps:        int = int(exercise["reps"])
-        sets:        int = int(exercise["sets"])
-        # Support both new ('notes', 'weight_kg') and legacy ('note', 'weight') field names
-        note:        str = exercise.get("notes") or exercise.get("note", "")
-        weight           = exercise.get("weight_kg") if exercise.get("weight_kg") is not None else exercise.get("weight")
-
-        mapping = GARMIN_EXERCISE_MAP.get(custom_name)
-        if mapping is not None:
-            # 1. Exact match in GARMIN_EXERCISE_MAP (fastest path).
-            category, garmin_name = mapping
+        grouped_exercises = [exercise]
+        if is_superset and idx + 1 < n_exercises:
+            grouped_exercises.append(exercises[idx + 1])
+            idx += 2
         else:
-            # 2. Fuzzy fallback — search garmin_exercises_db.json.
-            fuzzy = fuzzy_match_exercise(custom_name)
-            if fuzzy is not None:
-                category, garmin_name = fuzzy
-            else:
-                # 3. Nothing matched — upload as UNKNOWN.
-                category, garmin_name = "UNKNOWN", "UNKNOWN_EXERCISE"
-                unmapped.append(custom_name)
-                logger.warning(
-                    "Exercise '%s' has no exact or fuzzy match — uploading as UNKNOWN."
-                    " Add it to garmin_exercises_db.json or GARMIN_EXERCISE_MAP.",
-                    custom_name,
-                )
+            idx += 1
 
-        # Build the inner steps for this RepeatGroup:
-        # [exercise_step, rest_step] — repeated N times (sets).
-        # skipLastRestStep=True drops the trailing rest after the final set;
-        # the between-exercise rest below takes its place.
-        inner_steps = [
-            _make_exercise_step(
-                step_order=group_order + 1,
-                child_step_id=child_step_id,
-                category=category,
-                exercise_name=garmin_name,
-                reps=reps,
-                note=note,
-                weight=weight,
-            ),
+        sets = int(grouped_exercises[0]["sets"])
+        
+        inner_steps = []
+        inner_step_order = group_order + 1
+        
+        for g_ex in grouped_exercises:
+            for key in ("name", "reps", "sets"):
+                if key not in g_ex:
+                    raise ValueError(f"Exercise in '{workout_name}' is missing '{key}': {g_ex}")
+            
+            c_name = g_ex["name"]
+            g_reps = int(g_ex["reps"])
+            g_note = g_ex.get("notes") or g_ex.get("note", "")
+            g_weight = g_ex.get("weight_kg") if g_ex.get("weight_kg") is not None else g_ex.get("weight")
+            
+            mapping = GARMIN_EXERCISE_MAP.get(c_name)
+            if mapping is not None:
+                category, garmin_name = mapping
+            else:
+                fuzzy = fuzzy_match_exercise(c_name)
+                if fuzzy is not None:
+                    category, garmin_name = fuzzy
+                else:
+                    category, garmin_name = "UNKNOWN", "UNKNOWN_EXERCISE"
+                    unmapped.append(c_name)
+                    logger.warning(
+                        "Exercise '%s' has no exact or fuzzy match — uploading as UNKNOWN."
+                        " Add it to garmin_exercises_db.json or GARMIN_EXERCISE_MAP.",
+                        c_name,
+                    )
+            
+            inner_steps.append(
+                _make_exercise_step(
+                    step_order=inner_step_order,
+                    child_step_id=child_step_id,
+                    category=category,
+                    exercise_name=garmin_name,
+                    reps=g_reps,
+                    note=g_note,
+                    weight=g_weight,
+                )
+            )
+            inner_step_order += 1
+
+        # Add one rest step at the end of the grouped exercises
+        rest_seconds = 90.0
+        if is_superset:
+            rest_seconds = 60.0
+
+        inner_steps.append(
             _make_rest_step(
-                step_order=group_order + 2,
+                step_order=inner_step_order,
                 child_step_id=child_step_id,
-            ),
-        ]
+                rest_seconds=rest_seconds
+            )
+        )
 
         repeat_group = {
             "type": "RepeatGroupDTO",
@@ -433,11 +450,10 @@ def build_garmin_workout(json_workout: dict) -> dict:
         }
 
         workout_steps.append(repeat_group)
-        group_order   += 1
+        group_order += 1
         child_step_id += 1
 
-        # Insert a standalone rest between exercises (not after the last one).
-        is_last = (idx == n_exercises - 1)
+        is_last = (idx == n_exercises)
         if not is_last and between_exercise_rest > 0:
             workout_steps.append(
                 _make_rest_step(
@@ -449,7 +465,7 @@ def build_garmin_workout(json_workout: dict) -> dict:
             group_order += 1
             logger.debug(
                 "Added %.0fs between-exercise rest after '%s'.",
-                between_exercise_rest, custom_name,
+                between_exercise_rest, grouped_exercises[0]["name"],
             )
 
     if unmapped:

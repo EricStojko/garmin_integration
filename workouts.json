@@ -1,57 +1,58 @@
 {
-  "week": 3,
-  "notes": "Beach Body 2026. CRITICAL UPDATE: Left shoulder prehab protocol activated. Replaced vertical overhead volume and deep incline angles with neutral scapular plane pressing (Landmine & Floor Press). Do not push past pain thresholds.",
+  "week": 4,
+  "notes": "Beach Body 2026 - PEAK WEEK. Overclocked parameters with progressive overload. Maintaining identical shoulder-safe angles (Floor Press & Landmine) but maximizing volume and density. Strict form required.",
   "schedule": {
-    "Monday": "Trening A (Potiski - Shoulder Safe)",
-    "Tuesday": "Trening B (Spodnji del)",
-    "Wednesday": "Aktivni počitek (LISS & Raztegovanje)",
-    "Thursday": "Trening C (Vlečenja)",
-    "Friday": "Aktivni počitek (LISS & Raztegovanje)",
-    "Saturday": "Trening D (Conditioning)",
-    "Sunday": "Popolni OFF (Dolgi LISS sprehod)"
+    "Monday": "Trening A (Potiski - Shoulder Safe Peak)",
+    "Tuesday": "Trening B (Spodnji del - Volumenski Peak)",
+    "Wednesday": "Aktivni počitek (LISS & Mobilnost)",
+    "Thursday": "Trening C (Vlečenja - Hypertrophy Peak)",
+    "Friday": "Aktivni počitek (LISS & Prehab)",
+    "Saturday": "Trening D (Conditioning - High Density Peak)",
+    "Sunday": "Popolni OFF"
   },
   "workouts": [
     {
       "id": "trening_a",
-      "name": "Trening A (Potiski - Shoulder Safe)",
+      "name": "Trening A (Potiski - Shoulder Safe Peak)",
       "exercises": [
-        { "name": "Push-up", "sets": 4, "reps": 11, "weight_kg": null, "notes": "Mandatory warm-up. Stop 2 reps before failure to keep shoulders fresh." },
-        { "name": "Shoulder Press", "sets": 3, "reps": 10, "weight_kg": 7.5, "notes": "EXECUTE AS: Single-Arm Landmine Press. Safe angled press in the scapular plane to protect the left shoulder." },
-        { "name": "Floor Press", "sets": 3, "reps": 10, "weight_kg": 12.5, "notes": "Dumbbell potisk s tal. Triceps and chest focus. The floor blocks elbows from dipping too low, completely unloading the shoulder capsule." },
-        { "name": "Lateral Raise", "sets": 4, "reps": 11, "weight_kg": 5.0, "notes": "Strict form. Dropped to 5kg permanently for Week 3 to focus on lateral delt isolation without upper trapezius compensation." },
-        { "name": "Reverse Crunch", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Floor core activation. Slow and controlled tempo." }
+        { "name": "Push-up", "sets": 4, "reps": 12, "weight_kg": null, "notes": "Peak volume. Focus on strict chest contraction. Stop 2 reps before shoulder fatigue." },
+        { "name": "Shoulder Press", "sets": 3, "reps": 11, "weight_kg": 7.5, "notes": "EXECUTE AS: Single-Arm Landmine Press. Safe plane overhead alternative." },
+        { "name": "Floor Press", "sets": 3, "reps": 11, "weight_kg": 12.5, "notes": "Dumbbell Floor Press. Mapped as BENCH_PRESS/DUMBBELL_FLOOR_PRESS. Floor blocks deep extension." },
+        { "name": "Lateral Raise", "sets": 4, "reps": 12, "weight_kg": 5.0, "notes": "Mapped as SHOULDER_PRESS/DUMBBELL_SHOULDER_PRESS. Strictly 5kg for isolated burnout." },
+        { "name": "Reverse Crunch", "sets": 3, "reps": 20, "weight_kg": null, "notes": "Controlled core finish." }
       ]
     },
     {
       "id": "trening_b",
-      "name": "Trening B (Spodnji del)",
+      "name": "Trening B (Spodnji del - Volumenski Peak)",
       "exercises": [
-        { "name": "Goblet Squat", "sets": 4, "reps": 11, "weight_kg": 16.0, "notes": "1-second pause at the bottom to protect the spine." },
-        { "name": "Lunge", "sets": 3, "reps": 9, "weight_kg": 5.0, "notes": "Bulgarian split squats on bench for piriformis stabilization." },
-        { "name": "Kettlebell Swing", "sets": 4, "reps": 20, "weight_kg": 16.0, "notes": "Explosive hip hinge, tight core engagement." },
-        { "name": "Hip Raise", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Glute bridge with resistance band, strong peak contraction." }
+        { "name": "Goblet Squat", "sets": 4, "reps": 12, "weight_kg": 16.0, "notes": "CRITICAL: 2-second forced pause at the bottom of every single rep." },
+        { "name": "Lunge", "sets": 3, "reps": 10, "weight_kg": 5.0, "notes": "Bulgarian split squats on bench. Slow eccentric phase." },
+        { "name": "Kettlebell Swing", "sets": 4, "reps": 22, "weight_kg": 16.0, "notes": "Peak conditioning volume. Explosive hip drive." },
+        { "name": "Hip Raise", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Glute bridge with resistance band. 2-second peak contraction at the top." }
       ]
     },
     {
       "id": "trening_c",
-      "name": "Trening C (Vlečenja)",
+      "name": "Trening C (Vlečenja - Hypertrophy Peak)",
       "exercises": [
-        { "name": "Pull-up", "sets": 4, "reps": 6, "weight_kg": null, "notes": "Assisted with power band on the cage. Focus on the lats." },
-        { "name": "Lat Pulldown", "sets": 3, "reps": 10, "weight_kg": 34.0, "notes": "Drive elbows down. Maintain safe tracking for left shoulder." },
-        { "name": "Row", "sets": 3, "reps": 8, "weight_kg": 20.0, "notes": "Seated cable rows. Strict positioning without spinal rotation." },
-        { "name": "Face Pull", "sets": 4, "reps": 15, "weight_kg": 15.0, "notes": "Crucial prehab for rotator cuff and posterior deltoid health." },
-        { "name": "Curl", "sets": 3, "reps": 12, "weight_kg": 10.0, "notes": "Dumbbell bicep curls. Left arm failure dictates set completion." }
+        { "name": "Pull-up", "sets": 4, "reps": 7, "weight_kg": null, "notes": "Chin-up underhand grip mapping. Focus on lat and bicep recruitment." },
+        { "name": "Lat Pulldown", "sets": 3, "reps": 11, "weight_kg": 35.0, "notes": "Retaining the heavy 35kg load. Drive down with the elbows." },
+        { "name": "Row", "sets": 3, "reps": 9, "weight_kg": 20.0, "notes": "Seated cable rows. Strict upright posture." },
+        { "name": "Face Pull", "sets": 4, "reps": 18, "weight_kg": 15.0, "notes": "Mapped as ROW/FACE_PULL. High volume prehab to flush left shoulder with blood." },
+        { "name": "Curl", "sets": 3, "reps": 12, "weight_kg": 10.0, "notes": "SUPERSET BLOCK: Mapped as PULL_UP/CHIN_UP for tracking. Transition immediately to Triceps Extension with zero rest." },
+        { "name": "Triceps Extension", "sets": 3, "reps": 15, "weight_kg": null, "notes": "SUPERSET PART 2: Banded Tricep Extension. Rest 60s only after this step is completed." }
       ]
     },
     {
       "id": "trening_d",
-      "name": "Trening D (Conditioning)",
+      "name": "Trening D (Conditioning - High Density Peak)",
       "exercises": [
-        { "name": "Shoulder Press", "sets": 4, "reps": 9, "weight_kg": 12.0, "notes": "Short T-bar landmine press." },
-        { "name": "Renegade Row", "sets": 3, "reps": 10, "weight_kg": 5.0, "notes": "Maintain stable hips in plank position." },
-        { "name": "Lunge", "sets": 3, "reps": 20, "weight_kg": 16.0, "notes": "High-volume weighted step-ups for metabolic conditioning." },
-        { "name": "Kettlebell Floor to Shelf", "sets": 3, "reps": 10, "weight_kg": 12.0, "notes": "KB Halo + Strict Press Combo. Mapped to Garmin taxonomy." },
-        { "name": "Leg Raise", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Lying leg raises for lower abs. Protect lumbar spine." }
+        { "name": "Shoulder Press", "sets": 4, "reps": 10, "weight_kg": 12.0, "notes": "T-bar landmine conditioning press." },
+        { "name": "Renegade Row", "sets": 3, "reps": 11, "weight_kg": 5.0, "notes": "Solid core plank rigidity." },
+        { "name": "Lunge", "sets": 3, "reps": 20, "weight_kg": 16.0, "notes": "High-volume kettlebell step-ups." },
+        { "name": "Kettlebell Floor to Shelf", "sets": 3, "reps": 12, "weight_kg": 12.0, "notes": "Mapped as HIP_SWING/SINGLE_ARM_KETTLEBELL_SWING to prevent stripping." },
+        { "name": "Leg Raise", "sets": 3, "reps": 20, "weight_kg": null, "notes": "Final core burn." }
       ]
     }
   ]
