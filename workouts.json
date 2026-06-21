@@ -1,59 +1,112 @@
 {
-  "week": 4,
-  "notes": "Beach Body 2026 - PEAK WEEK. Overclocked parameters with progressive overload. Maintaining identical shoulder-safe angles (Floor Press & Landmine) but maximizing volume and density. Strict form required.",
+  "week": 5,
+  "phase": "DELOAD",
+  "notes": "System recovery focus. 40% volume reduction to heal micro-tears and prevent CNS fatigue. Keep left shoulder healthy.",
   "schedule": {
-    "Monday": "Trening A (Potiski - Shoulder Safe Peak)",
-    "Tuesday": "Trening B (Spodnji del - Volumenski Peak)",
-    "Wednesday": "Aktivni počitek (LISS & Mobilnost)",
-    "Thursday": "Trening C (Vlečenja - Hypertrophy Peak)",
-    "Friday": "Aktivni počitek (LISS & Prehab)",
-    "Saturday": "Trening D (Conditioning - High Density Peak)",
+    "Monday": "Trening A (Push Day - Deload)",
+    "Tuesday": "Trening B (Leg Day & Cardio Engine - Deload)",
+    "Wednesday": "Aktivni počitek",
+    "Thursday": "Trening C (Pull Day - Deload)",
+    "Friday": "Aktivni počitek",
+    "Saturday": "Trening D (Conditioning - ACTIVE REST)",
     "Sunday": "Popolni OFF"
   },
   "workouts": [
     {
       "id": "trening_a",
-      "name": "Trening A (Potiski - Shoulder Safe Peak)",
+      "name": "Trening A (Push Day - Deload)",
       "exercises": [
-        { "name": "Push-up", "sets": 4, "reps": 12, "weight_kg": null, "notes": "Peak volume. Focus on strict chest contraction. Stop 2 reps before shoulder fatigue." },
-        { "name": "Shoulder Press", "sets": 3, "reps": 11, "weight_kg": 7.5, "notes": "EXECUTE AS: Single-Arm Landmine Press. Safe plane overhead alternative." },
-        { "name": "Floor Press", "sets": 3, "reps": 11, "weight_kg": 12.5, "notes": "Dumbbell Floor Press. Mapped as BENCH_PRESS/DUMBBELL_FLOOR_PRESS. Floor blocks deep extension." },
-        { "name": "Lateral Raise", "sets": 4, "reps": 12, "weight_kg": 5.0, "notes": "Mapped as SHOULDER_PRESS/DUMBBELL_SHOULDER_PRESS. Strictly 5kg for isolated burnout." },
-        { "name": "Reverse Crunch", "sets": 3, "reps": 20, "weight_kg": null, "notes": "Controlled core finish." }
+        {
+          "name": "Push-up",
+          "sets": 3,
+          "reps": 8,
+          "weight_kg": null,
+          "notes": "Bodyweight, strict tempo, RPE 6. Deload — do not push to failure."
+        },
+        {
+          "name": "Single-Arm Landmine Press",
+          "sets": 2,
+          "reps": 8,
+          "weight_kg": 5.0,
+          "notes": "Mobility/activation focus. Shoulder-safe plane. Light load, controlled movement."
+        },
+        {
+          "name": "Floor Press",
+          "sets": 3,
+          "reps": 8,
+          "weight_kg": 10.0,
+          "notes": "Dumbbell Floor Press @ 10kg per dumbbell. Mapped as BENCH_PRESS/DUMBBELL_FLOOR_PRESS. Floor blocks deep extension — shoulder safe."
+        },
+        {
+          "name": "Reverse Crunch",
+          "sets": 3,
+          "reps": 12,
+          "weight_kg": null,
+          "notes": "Controlled core finish. Deload volume."
+        }
       ]
     },
     {
       "id": "trening_b",
-      "name": "Trening B (Spodnji del - Volumenski Peak)",
+      "name": "Trening B (Leg Day & Cardio Engine - Deload)",
       "exercises": [
-        { "name": "Goblet Squat", "sets": 4, "reps": 12, "weight_kg": 16.0, "notes": "CRITICAL: 2-second forced pause at the bottom of every single rep." },
-        { "name": "Lunge", "sets": 3, "reps": 10, "weight_kg": 5.0, "notes": "Bulgarian split squats on bench. Slow eccentric phase." },
-        { "name": "Kettlebell Swing", "sets": 4, "reps": 22, "weight_kg": 16.0, "notes": "Peak conditioning volume. Explosive hip drive." },
-        { "name": "Hip Raise", "sets": 3, "reps": 15, "weight_kg": null, "notes": "Glute bridge with resistance band. 2-second peak contraction at the top." }
+        {
+          "name": "Goblet Squat",
+          "sets": 3,
+          "reps": 8,
+          "weight_kg": 16.0,
+          "notes": "No bottom isometric pause this week (removed for deload recovery). Standard controlled tempo."
+        },
+        {
+          "name": "Bodyweight Lunge",
+          "sets": 2,
+          "reps": 8,
+          "weight_kg": null,
+          "notes": "No external weight. Bodyweight only for joint recovery."
+        },
+        {
+          "name": "Kettlebell Swing",
+          "sets": 6,
+          "reps": 15,
+          "weight_kg": 16.0,
+          "notes": "EMOM FINISHER: 6-minute EMOM — 15 swings at the start of each minute for 6 minutes. Total: 90 explosive swings @ 16kg KB. Cardio substitute. Explosive hip drive."
+        }
       ]
     },
     {
       "id": "trening_c",
-      "name": "Trening C (Vlečenja - Hypertrophy Peak)",
+      "name": "Trening C (Pull Day - Deload)",
       "exercises": [
-        { "name": "Pull-up", "sets": 4, "reps": 7, "weight_kg": null, "notes": "Chin-up underhand grip mapping. Focus on lat and bicep recruitment." },
-        { "name": "Lat Pulldown", "sets": 3, "reps": 11, "weight_kg": 35.0, "notes": "Retaining the heavy 35kg load. Drive down with the elbows." },
-        { "name": "Row", "sets": 3, "reps": 9, "weight_kg": 20.0, "notes": "Seated cable rows. Strict upright posture." },
-        { "name": "Face Pull", "sets": 4, "reps": 18, "weight_kg": 15.0, "notes": "Mapped as ROW/FACE_PULL. High volume prehab to flush left shoulder with blood." },
-        { "name": "Curl", "sets": 3, "reps": 12, "weight_kg": 10.0, "notes": "SUPERSET BLOCK: Mapped as PULL_UP/CHIN_UP for tracking. Transition immediately to Triceps Extension with zero rest." },
-        { "name": "Triceps Extension", "sets": 3, "reps": 15, "weight_kg": null, "notes": "SUPERSET PART 2: Banded Tricep Extension. Rest 60s only after this step is completed." }
+        {
+          "name": "Pull-up",
+          "sets": 3,
+          "reps": 4,
+          "weight_kg": null,
+          "notes": "Using thick assistance band. Strictly recovery pace — no grinding. Deload sets."
+        },
+        {
+          "name": "Lat Pulldown",
+          "sets": 3,
+          "reps": 8,
+          "weight_kg": 30.0,
+          "notes": "Dropped from 35kg to 30kg for deload. Drive down with the elbows."
+        },
+        {
+          "name": "Banded Face Pulls",
+          "sets": 3,
+          "reps": 15,
+          "weight_kg": 10.0,
+          "notes": "High volume blood flow pump for left shoulder recovery. Light resistance band @ 10kg equivalent. Focus on external rotation at peak."
+        }
       ]
     },
     {
       "id": "trening_d",
-      "name": "Trening D (Conditioning - High Density Peak)",
-      "exercises": [
-        { "name": "Shoulder Press", "sets": 4, "reps": 10, "weight_kg": 12.0, "notes": "T-bar landmine conditioning press." },
-        { "name": "Renegade Row", "sets": 3, "reps": 11, "weight_kg": 5.0, "notes": "Solid core plank rigidity." },
-        { "name": "Lunge", "sets": 3, "reps": 20, "weight_kg": 16.0, "notes": "High-volume kettlebell step-ups." },
-        { "name": "Kettlebell Floor to Shelf", "sets": 3, "reps": 12, "weight_kg": 12.0, "notes": "Mapped as HIP_SWING/SINGLE_ARM_KETTLEBELL_SWING to prevent stripping." },
-        { "name": "Leg Raise", "sets": 3, "reps": 20, "weight_kg": null, "notes": "Final core burn." }
-      ]
+      "name": "Trening D (Conditioning - ACTIVE REST)",
+      "omitted": true,
+      "type": "ACTIVE_REST",
+      "notes": "Complete nervous system rest. Optional evening low-impact walk by the coast if weather permits.",
+      "exercises": []
     }
   ]
 }

@@ -76,11 +76,15 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Lateral Raises":               ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
     "Lateral Raise":                ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
     "Reverse Crunch":               ("CRUNCH",            "REVERSE_CRUNCH"),
+    "Single-Arm Landmine Press":    ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
+    "Landmine Press":               ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
 
     # ---- Trening B (Spodnji del / Lower Body) --------------------------------
     "Goblet Squat":                 ("SQUAT",             "GOBLET_SQUAT"),
     "Bulgarian Split Squat":        ("LUNGE",             "BULGARIAN_SPLIT_SQUAT"),
     "Lunge":                        ("LUNGE",             "LUNGE"),
+    "Bodyweight Lunge":             ("LUNGE",             "LUNGE"),
+    "Bodyweight Lunges":            ("LUNGE",             "LUNGE"),
     "Kettlebell Swing":             ("HIP_SWING",         "SINGLE_ARM_KETTLEBELL_SWING"),
     "Glute Bridge":                 ("HIP_RAISE",         "HIP_RAISE"),
     "Hip Raise":                    ("HIP_RAISE",         "HIP_RAISE"),
@@ -93,6 +97,8 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Row":                          ("ROW",               "SEATED_CABLE_ROW"),
     "Face Pulls":                   ("ROW",               "FACE_PULL"),
     "Face Pull":                    ("ROW",               "FACE_PULL"),
+    "Banded Face Pulls":            ("ROW",               "FACE_PULL"),
+    "Banded Face Pull":             ("ROW",               "FACE_PULL"),
     "Dumbbell Bicep Curl":          ("PULL_UP",           "CHIN_UP"),
     "Curl":                         ("PULL_UP",           "CHIN_UP"),
     "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
@@ -573,7 +579,11 @@ def init_garmin_client() -> "Garmin | None":
 # ---------------------------------------------------------------------------
 
 def load_workouts(path: Path) -> list[dict]:
-    """Load and return the workout list from workouts.json."""
+    """Load and return the workout list from workouts.json.
+    
+    Workouts with ``omitted: true`` (e.g., ACTIVE_REST days) are skipped
+    automatically so they don't reach the payload builder.
+    """
     if not path.exists():
         raise FileNotFoundError(
             f"Workout file not found: {path}\n"
@@ -584,7 +594,15 @@ def load_workouts(path: Path) -> list[dict]:
     workouts = data.get("workouts")
     if not isinstance(workouts, list) or not workouts:
         raise ValueError("workouts.json must contain a top-level 'workouts' list.")
-    return workouts
+    # Filter out workouts flagged as omitted (e.g., ACTIVE_REST / deload rest days)
+    active_workouts = [w for w in workouts if not w.get("omitted", False)]
+    skipped = len(workouts) - len(active_workouts)
+    if skipped:
+        logger.info(
+            "Skipped %d omitted workout(s) (e.g., ACTIVE_REST days) — not uploaded.",
+            skipped,
+        )
+    return active_workouts
 
 
 # ---------------------------------------------------------------------------

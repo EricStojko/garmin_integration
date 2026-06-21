@@ -16,7 +16,7 @@
     {"names": ["Bulgarian Split Squat", "Split Squat", "Rear Foot Elevated Split Squat", "RFESS", "DB Bulgarian Split Squat", "Bolgarski počep"], "category": "LUNGE", "exerciseName": "BULGARIAN_SPLIT_SQUAT"},
     {"names": ["Walking Lunge", "Dumbbell Walking Lunge", "DB Walking Lunge", "Barbell Walking Lunge"], "category": "LUNGE", "exerciseName": "WALKING_LUNGE"},
     {"names": ["Reverse Lunge", "Step Back Lunge", "Dumbbell Reverse Lunge", "DB Reverse Lunge"], "category": "LUNGE", "exerciseName": "REVERSE_LUNGE"},
-    {"names": ["Forward Lunge", "Front Lunge", "Dumbbell Lunge", "DB Lunge", "Stationary Lunge", "Lunge", "Izpadni korak"], "category": "LUNGE", "exerciseName": "LUNGE"},
+    {"names": ["Forward Lunge", "Front Lunge", "Dumbbell Lunge", "DB Lunge", "Stationary Lunge", "Lunge", "Izpadni korak", "Bodyweight Lunge", "Bodyweight Lunges", "BW Lunge"], "category": "LUNGE", "exerciseName": "LUNGE"},
     {"names": ["Step Up", "Step-Up", "Stepper Step-ups", "Step Ups", "Dumbbell Step Up", "DB Step Up", "Kettlebell Step Up", "Box Step Up", "Stopanja na steper"], "category": "LUNGE", "exerciseName": "STEP_UP"},
     {"names": ["Lateral Lunge", "Side Lunge", "Dumbbell Lateral Lunge"], "category": "LUNGE", "exerciseName": "LATERAL_LUNGE"},
 
@@ -35,7 +35,7 @@
     {"names": ["Dumbbell Bench Press", "DB Bench_Press", "Flat Dumbbell Bench Press", "Flat DB Bench Press"], "category": "BENCH_PRESS", "exerciseName": "DUMBBELL_BENCH_PRESS"},
     {"names": ["Close Grip Bench Press", "Close-Grip Bench Press", "Narrow Grip Bench Press"], "category": "BENCH_PRESS", "exerciseName": "CLOSE_GRIP_BARBELL_BENCH_PRESS"},
 
-    {"names": ["Dumbbell Shoulder Press", "DB Shoulder Press", "Seated DB Shoulder Press", "Enorocni DB Shoulder Press", "One Arm Dumbbell Shoulder Press", "Single Arm DB Press", "Potisk nad glavo z ročko"], "category": "SHOULDER_PRESS", "exerciseName": "DUMBBELL_SHOULDER_PRESS"},
+    {"names": ["Dumbbell Shoulder Press", "DB Shoulder Press", "Seated DB Shoulder Press", "Enorocni DB Shoulder Press", "One Arm Dumbbell Shoulder Press", "Single Arm DB Press", "Potisk nad glavo z ročko", "Single-Arm Landmine Press", "Landmine Press", "Landmine Shoulder Press", "Single Arm Landmine Press"], "category": "SHOULDER_PRESS", "exerciseName": "DUMBBELL_SHOULDER_PRESS"},
     {"names": ["Barbell Overhead Press", "Overhead Press", "OHP", "Military Press", "Standing Overhead Press", "Barbell Military Press", "Barbell Press"], "category": "SHOULDER_PRESS", "exerciseName": "OVERHEAD_BARBELL_PRESS"},
     {"names": ["Arnold Press", "Arnold Dumbbell Press", "DB Arnold Press"], "category": "SHOULDER_PRESS", "exerciseName": "ARNOLD_PRESS"},
     {"names": ["Push Press", "Push Press z dolgo palico", "Barbell Push Press", "Push Press BB"], "category": "SHOULDER_PRESS", "exerciseName": "PUSH_PRESS"},
@@ -51,7 +51,7 @@
     {"names": ["Cable Row", "Seated Cable Row", "Low Cable Row", "Cable Seated Row", "Enorocno veslanje na skripcu", "One Arm Cable Row", "Single Arm Cable Row", "Veslanje na škripcu"], "category": "ROW", "exerciseName": "CABLE_ROW"},
     {"names": ["Dumbbell Row", "DB Row", "One Arm Dumbbell Row", "Single Arm Row", "Single Arm DB Row", "Veslanje z ročko"], "category": "ROW", "exerciseName": "DUMBBELL_ROW"},
     {"names": ["Barbell Row", "Bent Over Row", "Bent-Over Row", "BB Row", "Barbell Bent Over Row"], "category": "ROW", "exerciseName": "BARBELL_ROW"},
-    {"names": ["Face Pull", "Face Pulls", "Cable Face Pull", "Rope Face Pull", "Vlečenje proti obrazu"], "category": "ROW", "exerciseName": "FACE_PULL"},
+    {"names": ["Face Pull", "Face Pulls", "Cable Face Pull", "Rope Face Pull", "Vlečenje proti obrazu", "Banded Face Pulls", "Banded Face Pull", "Band Face Pull"], "category": "ROW", "exerciseName": "FACE_PULL"},
     {"names": ["Renegade Row", "DB Renegade Row", "Dumbbell Renegade Row", "Skleca z veslanjem"], "category": "ROW", "exerciseName": "RENEGADE_ROW"},
     {"names": ["T-Bar Row", "T Bar Row", "Landmine Row"], "category": "ROW", "exerciseName": "T_BAR_ROW"},
     {"names": ["Inverted Row", "Bodyweight Row", "Australian Pull Up", "Ring Row"], "category": "ROW", "exerciseName": "INVERTED_ROW"},

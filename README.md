@@ -1,6 +1,8 @@
 # Garmin Connect Workout Uploader 🏋️‍♂️
 
-A production-ready Python tool to automate uploading structured strength training workouts to Garmin Connect using the unofficial `garminconnect` library. 
+A production-ready Python tool to automate uploading structured strength training workouts to Garmin Connect using the unofficial `garminconnect` library.
+
+*Note: This project was developed with the assistance of AI.*
 
 This script parses a local `workouts.json` file, translates exercise names to verified Garmin database categories, groups sets into standard repeat blocks with configurable rest times, and uploads them directly to your Garmin account.
 
