@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run unit tests
+        run: python -m unittest test_garmin_uploader.py -v
+
+      - name: Validate workouts.json schema
+        run: python validate_schema.py
+
+      - name: Check for duplicate DB aliases
+        run: |
+          python -c "
+          import json, sys
+          db = json.load(open('garmin_exercises_db.json', encoding='utf-8'))
+          seen = {}; dups = []
+          for e in db['exercises']:
+            for a in e['names']:
+              k = a.lower()
+              if k in seen: dups.append(f'{a}: {seen[k]} vs {e[\"exerciseName\"]}')
+              else: seen[k] = e['exerciseName']
+          if dups: print('\n'.join(dups)); sys.exit(1)
+          print(f'No duplicates in {len(seen)} aliases.')
+          "
