@@ -370,5 +370,36 @@ class TestGarminUploader(unittest.TestCase):
         # Last step: standalone Pull-up RepeatGroup
         self.assertEqual(steps[2]["type"], "RepeatGroupDTO")
 
+    @patch("garmin_uploader.time.sleep")
+    def test_upload_retry_on_rate_limit(self, mock_sleep):
+        """_upload_with_retry retries on rate-limit and succeeds on second attempt."""
+        from garmin_uploader import _upload_with_retry
+        from garminconnect import GarminConnectTooManyRequestsError
+
+        mock_client = MagicMock()
+        mock_client.upload_workout.side_effect = [
+            GarminConnectTooManyRequestsError("429"),
+            {"workoutId": "abc123"},           # succeeds on 2nd attempt
+        ]
+        payload = {"workoutName": "Test"}
+        result = _upload_with_retry(mock_client, payload, "Test", max_retries=3, base_delay=1.0)
+
+        self.assertEqual(result, {"workoutId": "abc123"})
+        self.assertEqual(mock_client.upload_workout.call_count, 2)
+        mock_sleep.assert_called_once_with(1.0)  # base_delay * 2^0
+
+    @patch("garmin_uploader.time.sleep")
+    def test_upload_retry_exhausted_returns_none(self, mock_sleep):
+        """_upload_with_retry returns None after all retries fail."""
+        from garmin_uploader import _upload_with_retry
+        from garminconnect import GarminConnectTooManyRequestsError
+
+        mock_client = MagicMock()
+        mock_client.upload_workout.side_effect = GarminConnectTooManyRequestsError("429")
+        result = _upload_with_retry(mock_client, {}, "Fail", max_retries=2, base_delay=1.0)
+
+        self.assertIsNone(result)
+        self.assertEqual(mock_client.upload_workout.call_count, 2)
+
 if __name__ == "__main__":
     unittest.main()

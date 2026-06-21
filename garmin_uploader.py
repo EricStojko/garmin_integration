@@ -24,6 +24,7 @@ import json
 import logging
 import os
 import sys
+import time
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -561,8 +562,41 @@ def validate_payload(payload: dict, workout_name: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Authentication
+# Authentication & Upload Retry
 # ---------------------------------------------------------------------------
+
+def _upload_with_retry(
+    client: "Garmin",
+    payload: dict,
+    workout_name: str,
+    max_retries: int = 3,
+    base_delay: float = 30.0,
+) -> dict | None:
+    """
+    Upload a workout payload to Garmin Connect with exponential backoff.
+
+    Retries up to `max_retries` times on GarminConnectTooManyRequestsError.
+    Delay sequence: base_delay, base_delay*2, base_delay*4 (seconds).
+
+    Returns the API response dict, or None if all retries exhausted.
+    """
+    for attempt in range(1, max_retries + 1):
+        try:
+            return client.upload_workout(payload)
+        except GarminConnectTooManyRequestsError:
+            if attempt == max_retries:
+                logger.error(
+                    "Rate-limited uploading '%s' — all %d retries exhausted.",
+                    workout_name, max_retries,
+                )
+                return None
+            delay = base_delay * (2 ** (attempt - 1))
+            logger.warning(
+                "Rate-limited on '%s' (attempt %d/%d). Retrying in %.0fs...",
+                workout_name, attempt, max_retries, delay,
+            )
+            time.sleep(delay)
+    return None  # unreachable but satisfies type checker
 
 def init_garmin_client() -> "Garmin | None":
     """
@@ -665,14 +699,33 @@ def main() -> None:
     existing_workouts = {}
     try:
         logger.info("Fetching existing workouts from Garmin Connect for deduplication...")
-        # Get up to 100 workouts
-        online_list = client.get_workouts(0, 100)
+        PAGE_SIZE = 100
+        online_list = []
+        offset = 0
+        while True:
+            page = client.get_workouts(offset, PAGE_SIZE)
+            if not page:
+                break
+            online_list.extend(page)
+            if len(page) < PAGE_SIZE:
+                break           # last page
+            offset += PAGE_SIZE
+            time.sleep(0.3)    # be polite to the API between pages
+
+        logger.info("Fetched %d total online workouts across %d page(s).", len(online_list), offset // PAGE_SIZE + 1)
+        
+        if len(online_list) % PAGE_SIZE == 0 and len(online_list) > 0:
+            logger.warning(
+                "Online workout count (%d) is an exact multiple of PAGE_SIZE (%d). "
+                "There may be more workouts not fetched — verify deduplication.",
+                len(online_list), PAGE_SIZE,
+            )
+
         for w in online_list:
             w_name = w.get("workoutName")
             w_id = w.get("workoutId") or w.get("id")
             if w_name and w_id:
                 existing_workouts[w_name] = w_id
-        logger.info("Found %d online workouts.", len(existing_workouts))
     except Exception as exc:
         logger.warning("Could not fetch existing workouts: %s. Proceeding without deduplication.", exc)
 
@@ -714,7 +767,10 @@ def main() -> None:
 
         try:
             logger.info("Uploading '%s' ...", workout_name)
-            response = client.upload_workout(payload)
+            response = _upload_with_retry(client, payload, workout_name)
+            if response is None:
+                failure_count += 1
+                continue
 
             workout_id = None
             if isinstance(response, dict):
@@ -736,9 +792,6 @@ def main() -> None:
                 )
             success_count += 1
 
-        except GarminConnectTooManyRequestsError:
-            logger.error("Rate-limited uploading '%s'. Try again later.", workout_name)
-            failure_count += 1
         except GarminConnectConnectionError as exc:
             logger.error("Connection error uploading '%s': %s", workout_name, exc)
             failure_count += 1
