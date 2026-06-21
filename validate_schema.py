@@ -72,6 +72,17 @@ for i, w in enumerate(data['workouts']):
         if 'notes' not in ex:
             err(f"[{wid}] '{name}': missing notes field")
 
+        # superset_with_next must be bool if present
+        ss = ex.get('superset_with_next')
+        if ss is not None and not isinstance(ss, bool):
+            err(f"[{wid}] '{name}': superset_with_next must be bool, got {type(ss).__name__}")
+
+        # Detect deprecated string-based superset detection
+        notes_str = ex.get('notes', '') or ''
+        if 'SUPERSET BLOCK:' in notes_str and not ss:
+            print(f"  [WARN] [{wid}] '{name}': uses deprecated 'SUPERSET BLOCK:' "
+                  f"string — add superset_with_next: true instead")
+
         # EMOM format detection
         fmt = ex.get('format', '').upper()
         if fmt == 'EMOM':

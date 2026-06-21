@@ -253,5 +253,122 @@ class TestGarminUploader(unittest.TestCase):
         # Should have uploaded both workouts
         self.assertEqual(mock_client.upload_workout.call_count, 2)
 
+    def test_load_workouts_skips_omitted(self):
+        """load_workouts() must filter out workouts with omitted=true."""
+        import json
+        import tempfile
+        from pathlib import Path
+        from garmin_uploader import load_workouts
+
+        sample = {
+            "week": 5,
+            "workouts": [
+                {"id": "a", "name": "Active A", "exercises": [{"name": "Push-up", "sets": 3, "reps": 8, "weight_kg": None, "notes": "test"}]},
+                {"id": "b", "name": "Rest Day", "omitted": True, "type": "ACTIVE_REST", "notes": "rest", "exercises": []},
+                {"id": "c", "name": "Active C", "exercises": [{"name": "Pull-up", "sets": 3, "reps": 5, "weight_kg": None, "notes": "test"}]},
+            ]
+        }
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8") as f:
+            json.dump(sample, f)
+            tmp_path = Path(f.name)
+
+        try:
+            result = load_workouts(tmp_path)
+            self.assertEqual(len(result), 2, "Should skip 1 omitted workout")
+            names = [w["name"] for w in result]
+            self.assertIn("Active A", names)
+            self.assertIn("Active C", names)
+            self.assertNotIn("Rest Day", names)
+        finally:
+            tmp_path.unlink(missing_ok=True)
+
+    def test_fuzzy_match_slovenian_alias(self):
+        """Fuzzy matcher resolves Slovenian-language exercise aliases."""
+        # 'Počep z zadaj' is a listed alias for BARBELL_BACK_SQUAT
+        result = fuzzy_match_exercise("Počep z zadaj")
+        self.assertIsNotNone(result, "Expected fuzzy match for Slovenian alias 'Počep z zadaj'")
+        category, exercise_name = result
+        self.assertEqual(category, "SQUAT")
+        self.assertEqual(exercise_name, "BARBELL_BACK_SQUAT")
+
+    def test_db_no_duplicate_aliases(self):
+        """garmin_exercises_db.json must not contain duplicate alias strings across entries."""
+        import json
+        from pathlib import Path
+
+        db_path = Path(__file__).parent / "garmin_exercises_db.json"
+        with db_path.open("r", encoding="utf-8") as f:
+            db = json.load(f)
+
+        seen: dict[str, str] = {}   # alias_lower → first exerciseName that claimed it
+        duplicates: list[str] = []
+
+        for entry in db.get("exercises", []):
+            ex_name = entry.get("exerciseName", "?")
+            for alias in entry.get("names", []):
+                key = alias.lower()
+                if key in seen:
+                    duplicates.append(
+                        f"'{alias}' claimed by both '{seen[key]}' and '{ex_name}'"
+                    )
+                else:
+                    seen[key] = ex_name
+
+        self.assertFalse(
+            duplicates,
+            f"Duplicate aliases found in garmin_exercises_db.json:\n  " + "\n  ".join(duplicates),
+        )
+
+    def test_superset_with_next_field(self):
+        """superset_with_next: true groups two consecutive exercises into one RepeatGroup."""
+        workout = {
+            "name": "Superset Test",
+            "exercises": [
+                {
+                    "name": "Goblet Squat",
+                    "sets": 3,
+                    "reps": 10,
+                    "superset_with_next": True,
+                    "notes": "First of superset"
+                },
+                {
+                    "name": "Reverse Crunch",
+                    "sets": 3,
+                    "reps": 15,
+                    "notes": "Second of superset"
+                },
+                {
+                    "name": "Pull-up",
+                    "sets": 3,
+                    "reps": 5,
+                    "notes": "Standalone after superset"
+                }
+            ]
+        }
+        payload = build_garmin_workout(workout)
+        steps = payload["workoutSegments"][0]["workoutSteps"]
+
+        # 3 exercises but grouped as: [superset pair] + [between-rest] + [standalone]
+        # → 3 top-level steps (1 RepeatGroup + 1 rest + 1 RepeatGroup)
+        self.assertEqual(len(steps), 3, f"Expected 3 top-level steps, got {len(steps)}")
+
+        # First step: RepeatGroup containing both superset exercises + 1 rest
+        superset_group = steps[0]
+        self.assertEqual(superset_group["type"], "RepeatGroupDTO")
+        inner = superset_group["workoutSteps"]
+        # 2 exercise steps + 1 intra-set rest step
+        self.assertEqual(len(inner), 3, "Superset RepeatGroup should contain 2 exercise steps + 1 rest")
+
+        exercise_inner = [s for s in inner if s.get("stepType", {}).get("stepTypeKey") == "interval"]
+        self.assertEqual(len(exercise_inner), 2, "Superset should contain exactly 2 interval steps")
+
+        # Categories must map correctly
+        cats = {s["category"] for s in exercise_inner}
+        self.assertIn("SQUAT", cats)
+        self.assertIn("CRUNCH", cats)
+
+        # Last step: standalone Pull-up RepeatGroup
+        self.assertEqual(steps[2]["type"], "RepeatGroupDTO")
+
 if __name__ == "__main__":
     unittest.main()

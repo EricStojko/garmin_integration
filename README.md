@@ -112,12 +112,40 @@ Exact matches always take priority over fuzzy matches.
 
 ---
 
-## Running Tests
+## Utility Scripts
 
-We use Python's built-in `unittest` library to verify payload mapping logic and format validations without hitting Garmin's live servers.
+| Script | Purpose | Hits API? |
+|---|---|---|
+| `validate_schema.py` | Validates `workouts.json` structure, field types, EMOM detection, superset flags | ❌ No |
+| `verify_garmin_upload.py` | End-to-end: uploads each workout, fetches it back, diffs categories against local, deletes. Use to catch silent API remappings. | ✅ Yes |
+| `find_valid_categories.py` | Probes a list of `(category, exerciseName)` pairs against Garmin's API; prints pass/fail. Use when adding new exercise types. | ✅ Yes |
+| `find_alt_categories.py` | Tests multiple candidate categories for a single exercise key; stops at first success. | ✅ Yes |
+| `debug_fetch.py` | Fetches and pretty-prints the full raw payload of the first workout on your Garmin account. Useful for debugging API structure. | ✅ Yes |
 
-Run tests using:
+Validate schema locally (no login required):
 ```bash
-python -m unittest test_garmin_uploader.py
+python validate_schema.py
 ```
 
+Run end-to-end upload verification (requires Garmin credentials):
+```bash
+python verify_garmin_upload.py
+```
+
+---
+
+## Running Tests
+
+We use Python's built-in `unittest` library to verify payload mapping logic, schema loading, fuzzy matching, and database integrity — without hitting Garmin's live servers.
+
+Test coverage includes:
+- Payload builder (`build_garmin_workout`) — mapping, rest steps, superset detection
+- Schema loader (`load_workouts`) — omitted workout filtering
+- Fuzzy matcher — known aliases, Slovenian aliases, below-threshold rejection
+- DB integrity — duplicate alias detection across `garmin_exercises_db.json`
+- End-to-end deduplication logic (`main` with mocked client)
+
+Run tests:
+```bash
+python -m unittest test_garmin_uploader.py -v
+```

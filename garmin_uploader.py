@@ -385,7 +385,16 @@ def build_garmin_workout(json_workout: dict) -> dict:
     while idx < n_exercises:
         exercise = exercises[idx]
         note_str = exercise.get("notes") or exercise.get("note", "")
-        is_superset = "SUPERSET BLOCK:" in note_str
+
+        # Prefer structured field; fall back to legacy note-string detection with a warning.
+        is_superset = bool(exercise.get("superset_with_next", False))
+        if not is_superset and "SUPERSET BLOCK:" in note_str:
+            logger.warning(
+                "[SUPERSET] Exercise '%s' uses deprecated 'SUPERSET BLOCK:' string "
+                "detection. Add \"superset_with_next\": true to the exercise JSON instead.",
+                exercise.get("name", "?"),
+            )
+            is_superset = True
 
         grouped_exercises = [exercise]
         if is_superset and idx + 1 < n_exercises:
