@@ -17,7 +17,7 @@ class TestGarminUploader(unittest.TestCase):
         # A sample valid workout structure that matches workouts.json format
         self.sample_workout = {
             "name": "Test Workout A",
-            "steps": [
+            "exercises": [
                 {
                     "name": "Goblet Squat",
                     "sets": 3,
@@ -76,11 +76,11 @@ class TestGarminUploader(unittest.TestCase):
     def test_build_garmin_workout_missing_required_fields(self):
         """Test that missing required keys raise ValueError."""
         # Missing workout name
-        invalid_workout_1 = {"steps": []}
+        invalid_workout_1 = {"exercises": []}
         with self.assertRaises(ValueError):
             build_garmin_workout(invalid_workout_1)
             
-        # Empty steps list
+        # Empty exercises list
         invalid_workout_2 = {"name": "Empty"}
         with self.assertRaises(ValueError):
             build_garmin_workout(invalid_workout_2)
@@ -88,7 +88,7 @@ class TestGarminUploader(unittest.TestCase):
         # Missing exercise field (reps)
         invalid_workout_3 = {
             "name": "Invalid Exercise",
-            "steps": [{"name": "Goblet Squat", "sets": 3}]
+            "exercises": [{"name": "Goblet Squat", "sets": 3}]
         }
         with self.assertRaises(ValueError):
             build_garmin_workout(invalid_workout_3)
@@ -97,7 +97,7 @@ class TestGarminUploader(unittest.TestCase):
         """Verify gibberish exercise names fall through all lookups and default to UNKNOWN."""
         unmapped_workout = {
             "name": "Unmapped Exercise Workout",
-            "steps": [
+            "exercises": [
                 {
                     "name": "Super Ultra Mega Lift XYZZY",
                     "sets": 3,
@@ -118,7 +118,7 @@ class TestGarminUploader(unittest.TestCase):
         workout = {
             "name": "Rest Test Workout",
             "between_exercise_rest": 90,
-            "steps": [
+            "exercises": [
                 {"name": "Goblet Squat",               "sets": 3, "reps": 8},
                 {"name": "Incline Dumbbell Bench Press", "sets": 3, "reps": 8},
                 {"name": "Lateral Raises",              "sets": 3, "reps": 12},
@@ -147,7 +147,7 @@ class TestGarminUploader(unittest.TestCase):
         workout = {
             "name": "Default Rest Workout",
             # no between_exercise_rest key
-            "steps": [
+            "exercises": [
                 {"name": "Goblet Squat",               "sets": 3, "reps": 8},
                 {"name": "Incline Dumbbell Bench Press", "sets": 3, "reps": 8},
             ]
@@ -161,7 +161,7 @@ class TestGarminUploader(unittest.TestCase):
         """Verify no between-exercise rest is appended after the final exercise."""
         workout = {
             "name": "Single Exercise",
-            "steps": [{"name": "Goblet Squat", "sets": 3, "reps": 8}]
+            "exercises": [{"name": "Goblet Squat", "sets": 3, "reps": 8}]
         }
         payload = build_garmin_workout(workout)
         steps = payload["workoutSegments"][0]["workoutSteps"]
@@ -231,11 +231,11 @@ class TestGarminUploader(unittest.TestCase):
         mock_load_workouts.return_value = [
             {
                 "name": "Duplicate Workout",
-                "steps": [{"name": "Goblet Squat", "sets": 3, "reps": 8}]
+                "exercises": [{"name": "Goblet Squat", "sets": 3, "reps": 8}]
             },
             {
                 "name": "New Workout",
-                "steps": [{"name": "Goblet Squat", "sets": 3, "reps": 8}]
+                "exercises": [{"name": "Goblet Squat", "sets": 3, "reps": 8}]
             }
         ]
         

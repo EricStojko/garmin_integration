@@ -42,13 +42,13 @@
     {"names": ["Seated Barbell Overhead Press", "Seated Military Press", "Seated OHP"], "category": "SHOULDER_PRESS", "exerciseName": "SEATED_BARBELL_SHOULDER_PRESS"},
     {"names": ["Machine Shoulder Press", "Machine Press", "Shoulder Press Machine"], "category": "SHOULDER_PRESS", "exerciseName": "MACHINE_SHOULDER_PRESS"},
 
-    {"names": ["Pull Up", "Pull-Up", "Assisted Pull-ups", "Assisted Pull Up", "Bodyweight Pull Up", "Weighted Pull Up", "Zgibi"], "category": "PULL_UP", "exerciseName": "PULL_UP"},
+    {"names": ["Pull Up", "Pull-Up", "Pull Ups", "Assisted Pull-ups", "Assisted Pull Up", "Bodyweight Pull Up", "Weighted Pull Up", "Zgibi"], "category": "PULL_UP", "exerciseName": "PULL_UP"},
     {"names": ["Chin Up", "Chin-Up", "Underhand Pull Up", "Underhand Chin Up"], "category": "PULL_UP", "exerciseName": "CHIN_UP"},
     {"names": ["Lat Pulldown", "Lat Pull-Down", "Lat Pull Down", "Cable Lat Pulldown", "Machine Lat Pulldown", "Priteg na prsi", "Široki priteg"], "category": "PULL_UP", "exerciseName": "LAT_PULLDOWN"},
     {"names": ["Wide Grip Pull Up", "Wide Grip Pullup", "Wide Pull Up"], "category": "PULL_UP", "exerciseName": "WIDE_GRIP_PULL_UP"},
     {"names": ["Neutral Grip Pull Up", "Hammer Grip Pull Up", "Parallel Grip Pull Up"], "category": "PULL_UP", "exerciseName": "NEUTRAL_GRIP_PULL_UP"},
 
-    {"names": ["Cable Row", "Seated Cable Row", "Low Cable Row", "Cable Seated Row", "Enorocno veslanje na skripcu", "One Arm Cable Row", "Single Arm Cable Row", "Veslanje na škripcu"], "category": "ROW", "exerciseName": "CABLE_ROW"},
+    {"names": ["Cable Row", "Row", "Seated Cable Row", "Low Cable Row", "Cable Seated Row", "Enorocno veslanje na skripcu", "One Arm Cable Row", "Single Arm Cable Row", "Veslanje na škripcu"], "category": "ROW", "exerciseName": "SEATED_CABLE_ROW"},
     {"names": ["Dumbbell Row", "DB Row", "One Arm Dumbbell Row", "Single Arm Row", "Single Arm DB Row", "Veslanje z ročko"], "category": "ROW", "exerciseName": "DUMBBELL_ROW"},
     {"names": ["Barbell Row", "Bent Over Row", "Bent-Over Row", "BB Row", "Barbell Bent Over Row"], "category": "ROW", "exerciseName": "BARBELL_ROW"},
     {"names": ["Face Pull", "Face Pulls", "Cable Face Pull", "Rope Face Pull", "Vlečenje proti obrazu", "Banded Face Pulls", "Banded Face Pull", "Band Face Pull"], "category": "ROW", "exerciseName": "FACE_PULL"},
@@ -96,7 +96,7 @@
     {"names": ["Cable Crunch", "Rope Cable Crunch", "Kneeling Cable Crunch"], "category": "CRUNCH", "exerciseName": "CABLE_CRUNCH"},
     {"names": ["Sit Up", "Sit-Up", "Full Sit Up", "Weighted Sit Up"], "category": "CRUNCH", "exerciseName": "SIT_UP"},
 
-    {"names": ["Hanging Knee Raise", "Hanging Knee Raises", "Bent Knee Hanging Leg Raise", "Captains Chair Knee Raise", "Captain's Chair Knee Raise", "Dvig kolen na kletki"], "category": "LEG_RAISE", "exerciseName": "HANGING_KNEE_RAISE"},
+    {"names": ["Hanging Knee Raise", "Hanging Knee Raises", "Leg Raise", "Bent Knee Hanging Leg Raise", "Captains Chair Knee Raise", "Captain's Chair Knee Raise", "Dvig kolen na kletki"], "category": "LEG_RAISE", "exerciseName": "HANGING_KNEE_RAISE"},
     {"names": ["Hanging Leg Raise", "Straight Leg Hanging Raise", "Toes to Bar", "Toes-to-Bar"], "category": "LEG_RAISE", "exerciseName": "HANGING_LEG_RAISE"},
     {"names": ["Lying Leg Raise", "Flat Leg Raise", "Supine Leg Raise"], "category": "LEG_RAISE", "exerciseName": "LYING_LEG_RAISE"},
 

@@ -1,9 +1,8 @@
 """
 find_valid_categories.py
-Tests each suspect exercise category against Garmin's API and
-prints which ones are accepted vs rejected.
-Week 3 — Beach Body 2026 taxonomy validation.
-Token is cached so no 2FA needed.
+Probe each suspect exercise category against Garmin's API and print
+which (category, exerciseName) combinations are accepted vs rejected.
+Token is cached — no 2FA prompt needed on subsequent runs.
 """
 import json, os, sys, time
 from pathlib import Path
@@ -96,27 +95,36 @@ def make_payload(category, exercise_name):
         }]
     }
 
-valid   = []
-invalid = []
+if __name__ == "__main__":
+    load_dotenv(Path(__file__).parent / ".env")
 
-for label, (cat, ex) in SUSPECTS.items():
-    try:
-        resp = client.upload_workout(make_payload(cat, ex))
-        wid  = resp.get("workoutId") if isinstance(resp, dict) else "?"
-        print(f"  OK  {cat:20s}  (workout ID {wid})")
-        valid.append((label, wid))
-        # Clean up the test workout immediately
-        if wid and wid != "?":
-            try:
-                client.delete_workout(wid)
-            except Exception as exc:
-                print(f"  WARN: could not delete test workout {wid}: {exc}")
+    TOKENSTORE = str(Path(__file__).parent / ".garmin_tokens")
+
+    client = Garmin(os.getenv("GARMIN_EMAIL"), os.getenv("GARMIN_PASSWORD"), prompt_mfa=prompt_mfa)
+    client.login(TOKENSTORE)
+    print("Logged in (no MFA needed).\n")
+
+    valid   = []
+    invalid = []
+
+    for label, (cat, ex) in SUSPECTS.items():
+        try:
+            resp = client.upload_workout(make_payload(cat, ex))
+            wid  = resp.get("workoutId") if isinstance(resp, dict) else "?"
+            print(f"  OK  {cat:20s}  (workout ID {wid})")
+            valid.append((label, wid))
+            # Clean up the test workout immediately
+            if wid and wid != "?":
+                try:
+                    client.delete_workout(wid)
+                except Exception as exc:
+                    print(f"  WARN: could not delete test workout {wid}: {exc}")
+            time.sleep(0.3)
+        except Exception as e:
+            print(f"  FAIL {cat:20s}  -> {e}")
+            invalid.append((label, str(e)))
         time.sleep(0.3)
-    except Exception as e:
-        print(f"  FAIL {cat:20s}  -> {e}")
-        invalid.append((label, str(e)))
-    time.sleep(0.3)
 
-print("\n=== SUMMARY ===")
-print(f"Valid categories   ({len(valid)}):  {[v[0] for v in valid]}")
-print(f"Invalid categories ({len(invalid)}): {[i[0] for i in invalid]}")
+    print("\n=== SUMMARY ===")
+    print(f"Valid categories   ({len(valid)}):  {[v[0] for v in valid]}")
+    print(f"Invalid categories ({len(invalid)}): {[i[0] for i in invalid]}")

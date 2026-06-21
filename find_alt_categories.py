@@ -1,5 +1,7 @@
 """
-find_alt_categories.py — Tests alternative category names for Week 3 suspect exercises.
+find_alt_categories.py — Test alternative Garmin category names for suspect exercises.
+Run this script to probe which (category, exerciseName) combinations are accepted
+by Garmin's API. Adds/deletes minimal test workouts and cleans up automatically.
 """
 import os, sys, time
 from pathlib import Path
@@ -94,30 +96,39 @@ def make_payload(category, exercise_name):
         }]
     }
 
-winners = {}
+if __name__ == "__main__":
+    load_dotenv(Path(__file__).parent / ".env")
+    from garminconnect import Garmin  # noqa: E402
 
-for exercise, candidates in CANDIDATES.items():
-    print(f"\n--- Testing alternatives for: {exercise} ---")
-    for (cat, ex) in candidates:
-        try:
-            resp = client.upload_workout(make_payload(cat, ex))
-            wid  = resp.get("workoutId") if isinstance(resp, dict) else "?"
-            print(f"  OK   category='{cat}'  exercise='{ex}'  (ID {wid})")
-            winners[exercise] = cat
-            if wid and wid != "?":
-                try:
-                    client.delete_workout(wid)
-                except Exception:
-                    pass
-            break  # Break early on first verified successful candidate match
-        except Exception as e:
-            print(f"  FAIL category='{cat}'  -> {e}")
-        time.sleep(0.4)
+    TOKENSTORE = str(Path(__file__).parent / ".garmin_tokens")
+    client = Garmin(os.getenv("GARMIN_EMAIL"), os.getenv("GARMIN_PASSWORD"))
+    client.login(TOKENSTORE)
+    print("Logged in (cached session).\n")
 
-print("\n=== WINNING REPLACEMENTS ===")
-for ex, cat in winners.items():
-    print(f"  {ex:25s} -> use category '{cat}'")
+    winners = {}
 
-missing = [e for e in CANDIDATES if e not in winners]
-if missing:
-    print(f"\nStill unresolved: {missing}")
+    for exercise, candidates in CANDIDATES.items():
+        print(f"\n--- Testing alternatives for: {exercise} ---")
+        for (cat, ex) in candidates:
+            try:
+                resp = client.upload_workout(make_payload(cat, ex))
+                wid  = resp.get("workoutId") if isinstance(resp, dict) else "?"
+                print(f"  OK   category='{cat}'  exercise='{ex}'  (ID {wid})")
+                winners[exercise] = cat
+                if wid and wid != "?":
+                    try:
+                        client.delete_workout(wid)
+                    except Exception:
+                        pass
+                break  # Break early on first verified successful candidate match
+            except Exception as e:
+                print(f"  FAIL category='{cat}'  -> {e}")
+            time.sleep(0.4)
+
+    print("\n=== WINNING REPLACEMENTS ===")
+    for ex, cat in winners.items():
+        print(f"  {ex:25s} -> use category '{cat}'")
+
+    missing = [e for e in CANDIDATES if e not in winners]
+    if missing:
+        print(f"\nStill unresolved: {missing}")

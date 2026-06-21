@@ -60,61 +60,42 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# EXERCISE MAP  — human-readable name → (category, exerciseName)
+# EXERCISE OVERRIDES — verified (category, exerciseName) pairs with priority over DB.
 # ---------------------------------------------------------------------------
-# 'category' is the exercise group key (e.g. "BENCH_PRESS", "CURL").
-# 'exerciseName' is the specific variation (e.g. "DUMBBELL_BENCH_PRESS").
-# Both values are verified against real Garmin Connect workout payloads.
+# This dict is intentionally small. Only add entries here when:
+#   (a) The mapping is a deliberate semantic remap (e.g. Curl → CHIN_UP for
+#       pull-day tracking), OR
+#   (b) A short/ambiguous alias is not present in garmin_exercises_db.json, OR
+#   (c) An API-tested key differs from what the DB would resolve.
+#
+# Lookup order executed by build_garmin_workout():
+#   1. GARMIN_EXERCISE_OVERRIDES  — exact dict lookup, O(1)
+#   2. garmin_exercises_db.json   — exact alias match, O(n)
+#   3. garmin_exercises_db.json   — fuzzy difflib match, O(n)
+#   4. UNKNOWN fallback           — logged as WARNING
+#
+# All other exercises should be added to garmin_exercises_db.json instead.
 # ---------------------------------------------------------------------------
-GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
-    # ---- Trening A (Potiski / Push) ----------------------------------------
-    "Dips":                         ("PUSH_UP",           "DIP"),
-    "Push-up":                      ("PUSH_UP",           "PUSH_UP"),
-    "Dumbbell Shoulder Press":      ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
-    "Incline Dumbbell Bench Press": ("PUSH_UP",            "INCLINE_DUMBBELL_BENCH_PRESS"),
-    "Floor Press":                  ("BENCH_PRESS",       "DUMBBELL_FLOOR_PRESS"),
-    "Lateral Raises":               ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
-    "Lateral Raise":                ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
-    "Reverse Crunch":               ("CRUNCH",            "REVERSE_CRUNCH"),
-    "Single-Arm Landmine Press":    ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
-    "Landmine Press":               ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
-
-    # ---- Trening B (Spodnji del / Lower Body) --------------------------------
-    "Goblet Squat":                 ("SQUAT",             "GOBLET_SQUAT"),
-    "Bulgarian Split Squat":        ("LUNGE",             "BULGARIAN_SPLIT_SQUAT"),
-    "Lunge":                        ("LUNGE",             "LUNGE"),
-    "Bodyweight Lunge":             ("LUNGE",             "LUNGE"),
-    "Bodyweight Lunges":            ("LUNGE",             "LUNGE"),
-    "Kettlebell Swing":             ("HIP_SWING",         "SINGLE_ARM_KETTLEBELL_SWING"),
-    "Glute Bridge":                 ("HIP_RAISE",         "HIP_RAISE"),
-    "Hip Raise":                    ("HIP_RAISE",         "HIP_RAISE"),
-
-    # ---- Trening C (Vlecenja / Pull) -----------------------------------------
-    "Pull Ups":                     ("PULL_UP",           "PULL_UP"),
-    "Pull-up":                      ("PULL_UP",           "PULL_UP"),
-    "Lat Pulldown":                 ("PULL_UP",           "LAT_PULLDOWN"),
-    "Cable Row":                    ("ROW",               "SEATED_CABLE_ROW"),
-    "Row":                          ("ROW",               "SEATED_CABLE_ROW"),
-    "Face Pulls":                   ("ROW",               "FACE_PULL"),
-    "Face Pull":                    ("ROW",               "FACE_PULL"),
-    "Banded Face Pulls":            ("ROW",               "FACE_PULL"),
-    "Banded Face Pull":             ("ROW",               "FACE_PULL"),
+GARMIN_EXERCISE_OVERRIDES: dict[str, tuple[str, str]] = {
+    # ---- Semantic remaps: bicep curls tracked as CHIN_UP for pull-day consistency ----
     "Dumbbell Bicep Curl":          ("PULL_UP",           "CHIN_UP"),
     "Curl":                         ("PULL_UP",           "CHIN_UP"),
-    "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
-    "Triceps Extension":            ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),  # was empty string — fixed
 
-    # ---- Trening D (Conditioning) --------------------------------------------
-    "Push Press":                   ("SHOULDER_PRESS",    "PUSH_PRESS"),
+    # ---- Short/generic aliases not present as exact names in the DB ----
+    "Row":                          ("ROW",               "SEATED_CABLE_ROW"),
+    "Triceps Extension":            ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
     "Shoulder Press":               ("SHOULDER_PRESS",    "DUMBBELL_SHOULDER_PRESS"),
-    "Renegade Row":                 ("ROW",               "RENEGADE_ROW"),
-    "Step Up":                      ("LUNGE",             "STEP_UP"),
-    "Hanging Knee Raises":          ("LEG_RAISE",         "HANGING_KNEE_RAISE"),
     "Leg Raise":                    ("LEG_RAISE",         "HANGING_KNEE_RAISE"),
 
-    # ---- Garmin taxonomy mapped exercises -----------------------------------
+    # ---- Garmin taxonomy overrides ----
+    # Two-handed KB Swing — was incorrectly SINGLE_ARM in prior versions.
+    "Kettlebell Swing":             ("HIP_SWING",         "KETTLEBELL_SWING"),
+    # No native Garmin key for floor-to-shelf; single-arm swing is closest.
     "Kettlebell Floor to Shelf":    ("HIP_SWING",         "SINGLE_ARM_KETTLEBELL_SWING"),
 }
+
+# Backward-compat alias — remove once all call sites updated.
+GARMIN_EXERCISE_MAP = GARMIN_EXERCISE_OVERRIDES
 
 # Default token store path (saves session after first login → no 2FA next time)
 DEFAULT_TOKENSTORE = str(Path(__file__).parent / ".garmin_tokens")
@@ -133,8 +114,9 @@ DEFAULT_BETWEEN_EXERCISE_REST: float = 120.0  # 2 minutes
 # Fuzzy exercise matching
 # ---------------------------------------------------------------------------
 
-# Module-level cache so we only load the DB once per process run.
+# Module-level caches so we load the DB only once per process run.
 _exercise_db: list[dict] | None = None
+_db_exact_lookup: dict[str, tuple[str, str]] | None = None
 
 
 def _load_exercise_db() -> list[dict]:
@@ -164,6 +146,30 @@ def _load_exercise_db() -> list[dict]:
     _exercise_db = data.get("exercises", [])
     logger.debug("Loaded %d entries from garmin_exercises_db.json.", len(_exercise_db))
     return _exercise_db
+
+
+def _get_db_exact_lookup() -> dict[str, tuple[str, str]]:
+    """
+    Build (and cache) a flat ``{alias_lower: (category, exerciseName)}`` dict
+    from garmin_exercises_db.json for O(n) exact-match lookups.
+
+    This sits between GARMIN_EXERCISE_OVERRIDES and the fuzzy matcher in the
+    resolution chain, so common exercises resolve without difflib overhead.
+    """
+    global _db_exact_lookup
+    if _db_exact_lookup is not None:
+        return _db_exact_lookup
+
+    db = _load_exercise_db()
+    lookup: dict[str, tuple[str, str]] = {}
+    for entry in db:
+        cat = entry.get("category", "")
+        ex  = entry.get("exerciseName", "")
+        for alias in entry.get("names", []):
+            lookup[alias.lower()] = (cat, ex)
+    _db_exact_lookup = lookup
+    logger.debug("Built DB exact-lookup with %d aliases.", len(lookup))
+    return _db_exact_lookup
 
 
 def fuzzy_match_exercise(
@@ -350,8 +356,17 @@ def build_garmin_workout(json_workout: dict) -> dict:
     """
     if "name" not in json_workout:
         raise ValueError("Workout is missing the required 'name' field.")
-    # Support both new schema ('exercises') and legacy schema ('steps')
-    exercise_list = json_workout.get("exercises") or json_workout.get("steps")
+    # Prefer new 'exercises' key; fall back to legacy 'steps' with a deprecation warning.
+    exercise_list = json_workout.get("exercises")
+    if exercise_list is None:
+        legacy = json_workout.get("steps")
+        if legacy is not None:
+            logger.warning(
+                "Workout '%s' uses the deprecated 'steps' key — "
+                "rename it to 'exercises' in workouts.json.",
+                json_workout.get("name", "?"),
+            )
+            exercise_list = legacy
     if not exercise_list:
         raise ValueError(f"Workout '{json_workout['name']}' has no 'exercises' or 'steps' defined.")
 
@@ -393,22 +408,40 @@ def build_garmin_workout(json_workout: dict) -> dict:
             g_reps = int(g_ex["reps"])
             g_note = g_ex.get("notes") or g_ex.get("note", "")
             g_weight = g_ex.get("weight_kg") if g_ex.get("weight_kg") is not None else g_ex.get("weight")
-            
-            mapping = GARMIN_EXERCISE_MAP.get(c_name)
+            g_format = g_ex.get("format", "").upper()
+
+            # EMOM exercises are stored as sets×reps but have special protocol semantics.
+            if g_format == "EMOM":
+                logger.info(
+                    "[EMOM] '%s' encoded as %d sets × %d reps — represents a "
+                    "%d-minute EMOM. See notes for full protocol.",
+                    c_name, g_ex["sets"], g_reps, g_ex["sets"],
+                )
+
+            # 3-step resolution chain:
+            #   1. GARMIN_EXERCISE_OVERRIDES — intentional overrides & semantic remaps
+            #   2. DB exact match            — alias lookup from garmin_exercises_db.json
+            #   3. DB fuzzy match            — difflib fallback
+            mapping = GARMIN_EXERCISE_OVERRIDES.get(c_name)
             if mapping is not None:
                 category, garmin_name = mapping
             else:
-                fuzzy = fuzzy_match_exercise(c_name)
-                if fuzzy is not None:
-                    category, garmin_name = fuzzy
+                db_exact = _get_db_exact_lookup().get(c_name.lower())
+                if db_exact is not None:
+                    category, garmin_name = db_exact
+                    logger.debug("[DB EXACT] '%s' → %s / %s", c_name, category, garmin_name)
                 else:
-                    category, garmin_name = "UNKNOWN", "UNKNOWN_EXERCISE"
-                    unmapped.append(c_name)
-                    logger.warning(
-                        "Exercise '%s' has no exact or fuzzy match — uploading as UNKNOWN."
-                        " Add it to garmin_exercises_db.json or GARMIN_EXERCISE_MAP.",
-                        c_name,
-                    )
+                    fuzzy = fuzzy_match_exercise(c_name)
+                    if fuzzy is not None:
+                        category, garmin_name = fuzzy
+                    else:
+                        category, garmin_name = "UNKNOWN", "UNKNOWN_EXERCISE"
+                        unmapped.append(c_name)
+                        logger.warning(
+                            "Exercise '%s' has no exact or fuzzy match — uploading as UNKNOWN."
+                            " Add it to garmin_exercises_db.json or GARMIN_EXERCISE_OVERRIDES.",
+                            c_name,
+                        )
             
             inner_steps.append(
                 _make_exercise_step(
