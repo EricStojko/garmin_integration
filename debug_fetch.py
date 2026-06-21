@@ -20,9 +20,10 @@ def prompt_mfa():
 
 email    = os.getenv("GARMIN_EMAIL")
 password = os.getenv("GARMIN_PASSWORD")
+TOKENSTORE = str(Path(__file__).parent / ".garmin_tokens")
 
 client = Garmin(email, password, prompt_mfa=prompt_mfa)
-client.login()
+client.login(TOKENSTORE)   # use cached token — no 2FA prompt on subsequent runs
 print("Logged in!\n")
 
 # 1. List existing workouts

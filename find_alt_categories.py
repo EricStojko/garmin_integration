@@ -107,7 +107,7 @@ for exercise, candidates in CANDIDATES.items():
             if wid and wid != "?":
                 try:
                     client.delete_workout(wid)
-                except:
+                except Exception:
                     pass
             break  # Break early on first verified successful candidate match
         except Exception as e:

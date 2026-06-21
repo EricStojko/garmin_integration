@@ -102,7 +102,7 @@ GARMIN_EXERCISE_MAP: dict[str, tuple[str, str]] = {
     "Dumbbell Bicep Curl":          ("PULL_UP",           "CHIN_UP"),
     "Curl":                         ("PULL_UP",           "CHIN_UP"),
     "Triceps Pushdown":             ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),
-    "Triceps Extension":            ("TRICEPS_EXTENSION", ""),
+    "Triceps Extension":            ("TRICEPS_EXTENSION", "CABLE_TRICEPS_PUSHDOWN"),  # was empty string — fixed
 
     # ---- Trening D (Conditioning) --------------------------------------------
     "Push Press":                   ("SHOULDER_PRESS",    "PUSH_PRESS"),

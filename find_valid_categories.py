@@ -109,8 +109,8 @@ for label, (cat, ex) in SUSPECTS.items():
         if wid and wid != "?":
             try:
                 client.delete_workout(wid)
-            except Exception:
-                pass
+            except Exception as exc:
+                print(f"  WARN: could not delete test workout {wid}: {exc}")
         time.sleep(0.3)
     except Exception as e:
         print(f"  FAIL {cat:20s}  -> {e}")
