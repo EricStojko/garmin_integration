@@ -401,5 +401,42 @@ class TestGarminUploader(unittest.TestCase):
         self.assertIsNone(result)
         self.assertEqual(mock_client.upload_workout.call_count, 2)
 
+class TestModels(unittest.TestCase):
+    """Test Pydantic model validation from models.py."""
+
+    def test_exercise_coerces_int_weight_to_float(self):
+        from models import Exercise
+        ex = Exercise(name="Goblet Squat", sets=3, reps=8, weight_kg=16, notes="test")
+        self.assertIsInstance(ex.weight_kg, float)
+        self.assertEqual(ex.weight_kg, 16.0)
+
+    def test_exercise_rejects_zero_sets(self):
+        from models import Exercise
+        with self.assertRaises(Exception):
+            Exercise(name="Push-up", sets=0, reps=8, notes="test")
+
+    def test_workout_requires_type_when_omitted(self):
+        from models import Workout
+        with self.assertRaises(Exception):
+            Workout(id="trening_d", name="D", omitted=True, exercises=[])
+
+    def test_workouts_file_validates_full_structure(self):
+        from models import WorkoutsFile
+        data = {
+            "week": 6, "phase": "VOLUME", "notes": "test",
+            "schedule": {"Monday": "Trening A"},
+            "workouts": [
+                {"id": "trening_a", "name": "A", "exercises": [
+                    {"name": "Push-up", "sets": 3, "reps": 8, "notes": "ok"}
+                ]},
+                {"id": "trening_b", "name": "B", "exercises": []},
+                {"id": "trening_c", "name": "C", "exercises": []},
+                {"id": "trening_d", "name": "D", "omitted": True, "type": "ACTIVE_REST", "notes": "rest", "exercises": []},
+            ]
+        }
+        wf = WorkoutsFile(**data)
+        self.assertEqual(wf.week, 6)
+        self.assertEqual(len(wf.workouts), 4)
+
 if __name__ == "__main__":
     unittest.main()
