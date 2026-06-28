@@ -233,12 +233,19 @@ _EQUIPMENT_TYPE = {"equipmentTypeId": 0, "equipmentTypeKey": None, "displayOrder
 _WEIGHT_UNIT    = {"unitId": 8, "unitKey": "kilogram", "factor": 1000.0}
 
 
+def _parse_duration(d: str) -> float:
+    parts = d.split(":")
+    if len(parts) == 2:
+        return float(parts[0]) * 60 + float(parts[1])
+    return float(d)
+
 def _make_exercise_step(
     step_order: int,
     child_step_id: int,
     category: str,
     exercise_name: str,
-    reps: int,
+    reps: int | None,
+    duration_str: str | None,
     note: str,
     weight: float = None,
 ) -> dict:
@@ -253,12 +260,12 @@ def _make_exercise_step(
         "childStepId": child_step_id,
         "description": note or None,
         "endCondition": {
-            "conditionTypeId": 10,
-            "conditionTypeKey": "reps",
-            "displayOrder": 10,
+            "conditionTypeId": 10 if reps is not None else 2,
+            "conditionTypeKey": "reps" if reps is not None else "time",
+            "displayOrder": 10 if reps is not None else 2,
             "displayable": True,
         },
-        "endConditionValue": float(reps),
+        "endConditionValue": float(reps) if reps is not None else _parse_duration(duration_str),
         "preferredEndConditionUnit": None,
         "endConditionCompare": None,
         "targetType": {
@@ -410,22 +417,26 @@ def build_garmin_workout(json_workout: dict) -> dict:
         inner_step_order = group_order + 1
         
         for g_ex in grouped_exercises:
-            for key in ("name", "reps", "sets"):
+            for key in ("name", "sets"):
                 if key not in g_ex:
                     raise ValueError(f"Exercise in '{workout_name}' is missing '{key}': {g_ex}")
+            if "reps" not in g_ex and "duration" not in g_ex:
+                raise ValueError(f"Exercise in '{workout_name}' must have 'reps' or 'duration': {g_ex}")
             
             c_name = g_ex["name"]
-            g_reps = int(g_ex["reps"])
+            g_reps = int(g_ex["reps"]) if g_ex.get("reps") is not None else None
+            g_duration = g_ex.get("duration")
             g_note = g_ex.get("notes") or g_ex.get("note", "")
             g_weight = g_ex.get("weight_kg") if g_ex.get("weight_kg") is not None else g_ex.get("weight")
             g_format = g_ex.get("format", "").upper()
 
-            # EMOM exercises are stored as sets×reps but have special protocol semantics.
+            # EMOM exercises are stored as sets×reps or sets×duration but have special protocol semantics.
             if g_format == "EMOM":
+                val = f"{g_reps} reps" if g_reps is not None else f"{g_duration} duration"
                 logger.info(
-                    "[EMOM] '%s' encoded as %d sets × %d reps — represents a "
+                    "[EMOM] '%s' encoded as %d sets × %s — represents a "
                     "%d-minute EMOM. See notes for full protocol.",
-                    c_name, g_ex["sets"], g_reps, g_ex["sets"],
+                    c_name, g_ex["sets"], val, g_ex["sets"],
                 )
 
             # 3-step resolution chain:
@@ -460,6 +471,7 @@ def build_garmin_workout(json_workout: dict) -> dict:
                     category=category,
                     exercise_name=garmin_name,
                     reps=g_reps,
+                    duration_str=g_duration,
                     note=g_note,
                     weight=g_weight,
                 )

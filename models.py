@@ -11,7 +11,8 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 class Exercise(BaseModel):
     name: str = Field(..., min_length=1, description="Human-readable exercise name matching garmin_exercises_db.json")
     sets: int = Field(..., gt=0, description="Number of sets")
-    reps: int = Field(..., gt=0, description="Reps per set")
+    reps: int | None = Field(None, gt=0, description="Reps per set")
+    duration: str | None = Field(None, description="Time duration e.g. '01:00' for 1 minute")
     weight_kg: float | None = Field(None, ge=0.0, description="Load in kg; null for bodyweight")
     notes: str = Field("", description="Coach notes, tempo, RPE, etc.")
     format: Literal["EMOM"] | None = Field(None, description="EMOM: encode as sets=minutes, reps=reps_per_minute")
@@ -24,6 +25,12 @@ class Exercise(BaseModel):
         if isinstance(v, int):
             return float(v)
         return v
+
+    @model_validator(mode="after")
+    def check_reps_or_duration(self):
+        if self.reps is None and self.duration is None:
+            raise ValueError("Must provide either reps or duration")
+        return self
 
 
 class Workout(BaseModel):

@@ -1,112 +1,133 @@
 {
-  "week": 5,
-  "phase": "DELOAD",
-  "notes": "System recovery focus. 40% volume reduction to heal micro-tears and prevent CNS fatigue. Keep left shoulder healthy.",
+  "week": 6,
+  "phase": "VOLUME",
+  "notes": "Focus on increasing volume and keeping the left shoulder safe. Strict form, tempo control, and tracking heart rate.",
   "schedule": {
-    "Monday": "Trening A (Push Day - Deload)",
-    "Tuesday": "Trening B (Leg Day & Cardio Engine - Deload)",
-    "Wednesday": "Aktivni počitek",
-    "Thursday": "Trening C (Pull Day - Deload)",
-    "Friday": "Aktivni počitek",
-    "Saturday": "Trening D (Conditioning - ACTIVE REST)",
-    "Sunday": "Popolni OFF"
+    "Monday": "Trening A",
+    "Tuesday": "REST",
+    "Wednesday": "Trening B",
+    "Thursday": "REST",
+    "Friday": "Trening C",
+    "Saturday": "REST",
+    "Sunday": "REST"
   },
   "workouts": [
     {
       "id": "trening_a",
-      "name": "Trening A (Push Day - Deload)",
+      "name": "Trening A (Push + Cardio Engine)",
+      "omitted": false,
+      "between_exercise_rest": 120.0,
       "exercises": [
         {
-          "name": "Push-up",
-          "sets": 3,
-          "reps": 8,
-          "weight_kg": null,
-          "notes": "Bodyweight, strict tempo, RPE 6. Deload — do not push to failure."
+          "name": "Dumbbell Floor Press",
+          "sets": 4,
+          "reps": 10,
+          "weight_kg": 15.0,
+          "notes": "RPE 7-8. Elbows touch the floor softly. 100% safe for left shoulder."
         },
         {
-          "name": "Single-Arm Landmine Press",
-          "sets": 2,
-          "reps": 8,
+          "name": "Dumbbell Lateral Raises",
+          "sets": 3,
+          "reps": 12,
           "weight_kg": 5.0,
-          "notes": "Mobility/activation focus. Shoulder-safe plane. Light load, controlled movement."
+          "notes": "RPE <= 7. Strict control, focus on lateral deltoid."
         },
         {
-          "name": "Floor Press",
+          "name": "Incline Push-ups on Rack",
           "sets": 3,
-          "reps": 8,
-          "weight_kg": 10.0,
-          "notes": "Dumbbell Floor Press @ 10kg per dumbbell. Mapped as BENCH_PRESS/DUMBBELL_FLOOR_PRESS. Floor blocks deep extension — shoulder safe."
+          "reps": 12,
+          "weight_kg": null,
+          "notes": "Hands on the barbell/dips bar on the rack. Keep elbows tucked in."
         },
         {
           "name": "Reverse Crunch",
           "sets": 3,
-          "reps": 12,
+          "reps": 15,
           "weight_kg": null,
-          "notes": "Controlled core finish. Deload volume."
+          "notes": "Core engagement, slow leg lowering."
+        },
+        {
+          "name": "Kettlebell Swing",
+          "sets": 8,
+          "duration": "01:00",
+          "weight_kg": 16.0,
+          "format": "EMOM",
+          "notes": "EMOM Format. Perform 15 explosive swings at the start of the minute, then rest for the remainder. Put your SilaVit nasal strip on!"
         }
       ]
     },
     {
       "id": "trening_b",
-      "name": "Trening B (Leg Day & Cardio Engine - Deload)",
+      "name": "Trening B (Leg Day & Core)",
+      "omitted": false,
+      "between_exercise_rest": 120.0,
       "exercises": [
         {
           "name": "Goblet Squat",
+          "sets": 4,
+          "reps": 10,
+          "weight_kg": 16.0,
+          "notes": "Tempo 3-0-1-0. 3 seconds slow eccentric lowering. Keep torso upright."
+        },
+        {
+          "name": "Walking Lunges",
           "sets": 3,
-          "reps": 8,
-          "weight_kg": 16.0,
-          "notes": "No bottom isometric pause this week (removed for deload recovery). Standard controlled tempo."
+          "reps": 10,
+          "weight_kg": 7.5,
+          "notes": "Step firmly, maintain balance, continuous movement."
         },
         {
-          "name": "Bodyweight Lunge",
-          "sets": 2,
-          "reps": 8,
+          "name": "Gymbeam Stepper Calves",
+          "sets": 3,
+          "reps": 20,
           "weight_kg": null,
-          "notes": "No external weight. Bodyweight only for joint recovery."
+          "notes": "Stand on the stepper edge. Max stretch at the bottom, hard squeeze at top."
         },
         {
-          "name": "Kettlebell Swing",
-          "sets": 6,
-          "reps": 15,
-          "weight_kg": 16.0,
-          "format": "EMOM",
-          "notes": "EMOM FINISHER: 6-minute EMOM — 15 swings at the start of each minute for 6 minutes. Total: 90 explosive swings @ 16kg KB. Cardio substitute. Explosive hip drive."
+          "name": "Ab Roller",
+          "sets": 3,
+          "reps": 10,
+          "weight_kg": null,
+          "notes": "Keep lower back rounded, engage core fully, do not overextend."
         }
       ]
     },
     {
       "id": "trening_c",
-      "name": "Trening C (Pull Day - Deload)",
+      "name": "Trening C (Pull Day - Neutral Grip)",
+      "omitted": false,
+      "between_exercise_rest": 120.0,
       "exercises": [
         {
-          "name": "Pull-up",
-          "sets": 3,
-          "reps": 4,
-          "weight_kg": null,
-          "notes": "Using thick assistance band. Strictly recovery pace — no grinding. Deload sets."
-        },
-        {
           "name": "Lat Pulldown",
-          "sets": 3,
-          "reps": 8,
+          "sets": 4,
+          "reps": 10,
           "weight_kg": 30.0,
-          "notes": "Dropped from 35kg to 30kg for deload. Drive down with the elbows."
+          "notes": "Use KingsBox Adjustable Handles (Size L) or narrow bar. Strict neutral grip. Keep shoulder stable."
         },
         {
-          "name": "Banded Face Pulls",
+          "name": "Seated Cable Row",
           "sets": 3,
+          "reps": 12,
+          "weight_kg": 35.0,
+          "notes": "Use the solid steel triangle handle. Keep elbows close to torso, squeeze shoulder blades."
+        },
+        {
+          "name": "Face Pulls",
+          "sets": 4,
           "reps": 15,
           "weight_kg": 10.0,
-          "notes": "High volume blood flow pump for left shoulder recovery. Light resistance band @ 10kg equivalent. Focus on external rotation at peak."
+          "notes": "Upper pulley with rope/band. Pull towards ears, external rotation. Essential for left shoulder rehab."
         }
       ]
     },
     {
       "id": "trening_d",
-      "name": "Trening D (Conditioning - ACTIVE REST)",
+      "name": "Trening D (REST)",
       "omitted": true,
       "type": "ACTIVE_REST",
-      "notes": "Complete nervous system rest. Optional evening low-impact walk by the coast if weather permits.",
+      "notes": "No workout planned for this day.",
+      "between_exercise_rest": 120.0,
       "exercises": []
     }
   ]
